@@ -50,6 +50,8 @@
 # for projects that use SCons for building: http://http://www.scons.org/
 .sconsign.dblite
 
+build/
+
 
 ### Intellij+iml ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm

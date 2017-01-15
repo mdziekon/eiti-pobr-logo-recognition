@@ -1,0 +1,45 @@
+# -*- mode: Python; -*-
+import platform
+import fnmatch
+import os
+
+def RecursiveGlob(pathname, fileMatcher):
+    matches = []
+    for root, dirnames, filenames in os.walk(pathname):
+        for filename in fnmatch.filter(filenames, fileMatcher):
+            matches.append(File(os.path.join(root, filename)))
+
+    return matches
+
+env = Environment()
+
+if(platform.system() == "Linux"):
+    env.Replace( CXX = 'clang++' )
+    env.Append( CPPFLAGS = '-Wall -std=c++11' )
+    env.Append( LINKFLAGS = '-Wall' )
+    env.Append( CPPPATH = [] )
+    env.Append( LIBPATH = [] )
+    env.Append( LIBS = [] )
+
+    targetFile = 'run'
+elif(platform.system() == "Windows"):
+    env.Append( CPPFLAGS = '/W3 /EHcs /D "WIN32" /D "_WIN32_WINNT#0x501" /D "_CONSOLE"')
+    #env.Append( LINKFLAGS = '-Wall' )
+    env.Append( CPPPATH = [] )
+    env.Append( LIBPATH = [] )
+    env.Append( LIBS = [] )
+
+    targetFile = 'run.exe'
+else:
+    print platform.system() + " not supported"
+
+# Build config
+targetDir = 'build'
+
+sources = RecursiveGlob('src', '*.cpp')
+
+env.Program(
+    target = [ targetDir + '/' + targetFile ],
+    source = [ sources ]
+)
+
