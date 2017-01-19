@@ -15,7 +15,7 @@ env = Environment()
 
 if(platform.system() == "Linux"):
     env.Replace( CXX = 'clang++' )
-    env.Append( CPPFLAGS = '-Wall -std=c++11' )
+    env.Append( CPPFLAGS = '-Wall -std=c++1z' )
     env.Append( LINKFLAGS = '-Wall' )
     env.Append( CPPPATH = [] )
     env.Append( LIBPATH = [] )
