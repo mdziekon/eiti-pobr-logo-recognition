@@ -11,7 +11,7 @@
 
 #include "../terminal-printer/TerminalPrinter.hpp"
 
-namespace pobr { namespace modules
+namespace pobr::modules
 {
     class ErrorHandler: public TerminalPrinter
     {
@@ -36,6 +36,6 @@ namespace pobr { namespace modules
 
         static void print(const unsigned int& labelShift, const std::string& message);
     };
-}}
+}
 
 #endif

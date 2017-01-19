@@ -8,7 +8,7 @@
 #include <string>
 #include <map>
 
-namespace pobr { namespace modules
+namespace pobr::modules
 {
     class TerminalPrinter
     {
@@ -19,6 +19,6 @@ namespace pobr { namespace modules
         static void printLabel(const std::string& message, const std::string& color = "");
         static const unsigned int getLabelLength(const std::string& message);
     };
-}}
+}
 
 #endif
