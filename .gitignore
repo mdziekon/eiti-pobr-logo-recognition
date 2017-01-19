@@ -51,6 +51,7 @@
 .sconsign.dblite
 
 build/
+data/
 
 
 ### Intellij+iml ###
