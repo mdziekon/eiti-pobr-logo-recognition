@@ -16,7 +16,7 @@ env = Environment()
 if(platform.system() == "Linux"):
     env.Replace( CXX = 'clang++' )
     env.Append( CPPFLAGS = '-Wall -std=c++1z' )
-    env.Append( LINKFLAGS = '-Wall' )
+    env.Append( LINKFLAGS = '-Wall `pkg-config --cflags opencv` `pkg-config --libs opencv`' )
     env.Append( CPPPATH = [] )
     env.Append( LIBPATH = [] )
     env.Append( LIBS = [] )

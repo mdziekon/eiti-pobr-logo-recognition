@@ -20,6 +20,8 @@ Kompilacja i uruchomienie
     * Clang: 3.6
     * MSVC: 14.3
 * Narzędzie **Scons** (``scons``)
+* Biblioteka **OpenCV 3.2.0**
+  * [Automatyczna instalacja dla Ubuntu](https://github.com/jayrambhia/Install-OpenCV)
 
 ### Instrukcja
 * Kompilacja: ``scons``
