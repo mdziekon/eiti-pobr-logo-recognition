@@ -2,13 +2,17 @@
 #define POBR_IMGPROCESSING_IMGPROCESSOR_HPP
 
 #include <string>
+#include <opencv2/core/core.hpp>
 
 namespace pobr::imgProcessing
 {
     class ImgProcessor
     {
     protected:
-        void* img = nullptr;
+        cv::Mat img;
+
+        const bool isReady();
+        const void assertIsReady();
     public:
         const void loadImg(const std::string& imgPath);
         const void process();
