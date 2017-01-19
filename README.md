@@ -14,7 +14,11 @@ Kompilacja i uruchomienie
 ---
 
 ### Wymagania
-* Kompilator wspierający standard **C++11** (``clang`` / ``gcc``)
+* Kompilator wspierający:
+  * [Nested namespace definition](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4230.html)
+    * GCC: 6.0
+    * Clang: 3.6
+    * MSVC: 14.3
 * Narzędzie **Scons** (``scons``)
 
 ### Instrukcja
