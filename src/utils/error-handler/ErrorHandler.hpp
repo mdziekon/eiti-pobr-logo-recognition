@@ -1,5 +1,5 @@
-#ifndef POBR_MODULES_ERRORHANDLER_HPP
-#define POBR_MODULES_ERRORHANDLER_HPP
+#ifndef POBR_UTILS_ERRORHANDLER_HPP
+#define POBR_UTILS_ERRORHANDLER_HPP
 
 #ifndef POBR_CONFIG_SILENTERRORS
 #define POBR_CONFIG_SILENTERRORS false
@@ -11,7 +11,7 @@
 
 #include "../terminal-printer/TerminalPrinter.hpp"
 
-namespace pobr::modules
+namespace pobr::utils
 {
     class ErrorHandler: public TerminalPrinter
     {

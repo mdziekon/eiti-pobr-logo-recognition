@@ -3,8 +3,8 @@
 #include <sstream>
 #include <iostream>
 
-using ErrorHandler = pobr::modules::ErrorHandler;
-using Exception = pobr::modules::ErrorHandler::Exception;
+using ErrorHandler = pobr::utils::ErrorHandler;
+using Exception = pobr::utils::ErrorHandler::Exception;
 
 // Exception class
 Exception::Exception(const std::string& error) noexcept:

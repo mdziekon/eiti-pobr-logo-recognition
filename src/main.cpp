@@ -1,9 +1,9 @@
 #include <vector>
 #include <string>
 
-#include "./modules/error-handler/ErrorHandler.hpp"
+#include "./utils/error-handler/ErrorHandler.hpp"
 
-using ErrorHandler = pobr::modules::ErrorHandler;
+using ErrorHandler = pobr::utils::ErrorHandler;
 
 int main(int argc, char** argv)
 {

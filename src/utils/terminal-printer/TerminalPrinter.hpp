@@ -1,5 +1,5 @@
-#ifndef POBR_MODULES_TERMINALPRINTER_HPP
-#define POBR_MODULES_TERMINALPRINTER_HPP
+#ifndef POBR_UTILS_TERMINALPRINTER_HPP
+#define POBR_UTILS_TERMINALPRINTER_HPP
 
 #ifndef POBR_CONFIG_TERMINALCOLORS
 #define POBR_CONFIG_TERMINALCOLORS true
@@ -8,7 +8,7 @@
 #include <string>
 #include <map>
 
-namespace pobr::modules
+namespace pobr::utils
 {
     class TerminalPrinter
     {

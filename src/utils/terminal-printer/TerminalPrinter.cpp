@@ -3,7 +3,7 @@
 #include <sstream>
 #include <iostream>
 
-using TerminalPrinter = pobr::modules::TerminalPrinter;
+using TerminalPrinter = pobr::utils::TerminalPrinter;
 
 const std::map<std::string, const unsigned int>&
 TerminalPrinter::getColors()
