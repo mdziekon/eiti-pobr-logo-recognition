@@ -144,7 +144,16 @@ const
 {
     this->assertIsReady();
 
-    cv::imshow("test", this->unsharpMasking(this->img));
+    auto img = this->img;
+
+    img = this->unsharpMasking(img);
+    img = this->binarizeImage(
+        img,
+        cv::Vec3b(0, 125, 0),
+        cv::Vec3b(255, 255, 255)
+    );
+
+    cv::imshow("test", img);
 
     cv::waitKey(-1);
 }
