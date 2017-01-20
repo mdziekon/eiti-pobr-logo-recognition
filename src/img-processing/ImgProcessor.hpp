@@ -15,6 +15,7 @@ namespace pobr::imgProcessing
 
         cv::Mat grayscaleImage(const cv::Mat& img) const;
         cv::Mat detectEdges(const cv::Mat& img) const;
+        cv::Mat unsharpMasking(const cv::Mat& img) const;
 
     protected:
         cv::Mat img;
@@ -34,12 +35,12 @@ namespace pobr::imgProcessing
             const std::function<Acc(const uint64_t& x, const uint64_t& y, Acc& accumulator)>& operation
         ) const;
 
-        template<class PixelClass, class Acc>
+        template<class PixelClass, class Acc, class KernelValue>
         cv::Mat applyKernel(
             const cv::Mat& img,
             const cv::Mat& kernel,
             Acc accumulatorInit,
-            const std::function<Acc(const uint64_t& x, const uint64_t& y, Acc& accumulator, const PixelClass& pixel, const Acc& kernelValue)>& reducer,
+            const std::function<Acc(const uint64_t& x, const uint64_t& y, Acc& accumulator, const PixelClass& pixel, const KernelValue& kernelValue)>& reducer,
             const std::function<void(const uint64_t& x, const uint64_t& y, Acc& accumulator, PixelClass& pixel, const cv::Mat& img)>& applicator
         ) const;
     };

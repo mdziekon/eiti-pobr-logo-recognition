@@ -1,5 +1,6 @@
 #include "ImgProcessor.hpp"
 
+#include <array>
 #include <algorithm>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -61,13 +62,13 @@ const
     return accumulator;
 }
 
-template<class PixelClass, class Acc>
+template<class PixelClass, class Acc, class KernelValue>
 cv::Mat
 ImgProcessor::applyKernel(
     const cv::Mat& img,
     const cv::Mat& kernel,
     Acc accumulatorInit,
-    const std::function<Acc(const uint64_t& x, const uint64_t& y, Acc& accumulator, const PixelClass& pixel, const Acc& kernelValue)>& reducer,
+    const std::function<Acc(const uint64_t& x, const uint64_t& y, Acc& accumulator, const PixelClass& pixel, const KernelValue& kernelValue)>& reducer,
     const std::function<void(const uint64_t& x, const uint64_t& y, Acc& accumulator, PixelClass& pixel, const cv::Mat& img)>& applicator
 )
 const
@@ -106,7 +107,7 @@ const
                 accumulatorInit,
                 [&](const uint64_t& kernelX, const uint64_t& kernelY, Acc& accumulator) -> Acc
                 {
-                    auto& thisKernelValue = kernel.at<Acc>(kernelY, kernelX);
+                    auto& thisKernelValue = kernel.at<KernelValue>(kernelY, kernelX);
                     auto& adjacentPixel = img.at<PixelClass>(
                         y - kernelOffsetY + kernelY,
                         x - kernelOffsetX + kernelX
@@ -141,7 +142,7 @@ const
 {
     this->assertIsReady();
 
-    cv::imshow("test", this->detectEdges(this->img));
+    cv::imshow("test", this->unsharpMasking(this->img));
 
     cv::waitKey(-1);
 }
@@ -190,7 +191,7 @@ const
 
     resultImg = this->grayscaleImage(resultImg);
 
-    resultImg = this->applyKernel<cv::Vec3b, double>(
+    resultImg = this->applyKernel<cv::Vec3b, double, double>(
         resultImg,
         kernel,
         0.0,
@@ -208,6 +209,63 @@ const
             pixel[0] = value;
             pixel[1] = value;
             pixel[2] = value;
+        }
+    );
+
+    return resultImg;
+}
+
+cv::Mat
+ImgProcessor::unsharpMasking(const cv::Mat& img)
+const
+{
+    auto resultImg = img.clone();
+
+    double kernelValues[25] = {
+        1,  4,    6,  4, 1,
+        4, 16,   24, 16, 4,
+        6, 24, -476, 24, 6,
+        4, 16,   24, 16, 4,
+        1,  4,    6,  4, 1        
+    };
+
+    auto kernel = cv::Mat(
+        5,
+        5,
+        CV_64F,
+        kernelValues
+    );
+
+    std::array<double, 3> accumulatorInit = { 0.0, 0.0, 0.0 };
+
+    resultImg = this->applyKernel<cv::Vec3b, std::array<double, 3>, double>(
+        resultImg,
+        kernel,
+        accumulatorInit,
+        [](const uint64_t& x, const uint64_t& y, std::array<double, 3>& accumulator, const cv::Vec3b& pixel, const double& kernelValue) -> std::array<double, 3>
+        {
+            accumulator[0] = accumulator[0] + (kernelValue * pixel[0]);
+            accumulator[1] = accumulator[1] + (kernelValue * pixel[1]);
+            accumulator[2] = accumulator[2] + (kernelValue * pixel[2]);
+
+            return accumulator;
+        },
+        [](const uint64_t& x, const uint64_t& y, std::array<double, 3>& accumulator, cv::Vec3b& pixel, const cv::Mat& img) -> void
+        {
+            accumulator[0] = accumulator[0] / 256 * -1;
+            accumulator[1] = accumulator[1] / 256 * -1;
+            accumulator[2] = accumulator[2] / 256 * -1;
+
+            accumulator[0] = std::min(accumulator[0], 255.0);
+            accumulator[0] = std::max(accumulator[0], 0.0);
+            accumulator[1] = std::min(accumulator[1], 255.0);
+            accumulator[1] = std::max(accumulator[1], 0.0);
+            accumulator[2] = std::min(accumulator[2], 255.0);
+            accumulator[2] = std::max(accumulator[2], 0.0);
+
+            pixel[0] = accumulator[0];
+            pixel[1] = accumulator[1];
+            pixel[2] = accumulator[2];
         }
     );
 
