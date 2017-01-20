@@ -45,6 +45,8 @@ namespace pobr::imgProcessing
             const std::function<Acc(const uint64_t& x, const uint64_t& y, Acc& accumulator, const PixelClass& pixel, const KernelValue& kernelValue)>& reducer,
             const std::function<void(const uint64_t& x, const uint64_t& y, Acc& accumulator, PixelClass& pixel, const cv::Mat& img)>& applicator
         ) const;
+
+        cv::Vec3d rgb2HSV(const cv::Vec3b opencvRGB) const;
     };
 }
 
