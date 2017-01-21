@@ -229,6 +229,28 @@ const
 }
 
 cv::Mat
+ImgProcessor::invertBinaryImage(const cv::Mat& img)
+const
+{
+    auto resultImg = img.clone();
+
+    this->forEachPixel(
+        img,
+        [&](const uint64_t& x, const uint64_t& y) -> void
+        {
+            auto& thisPixel = resultImg.at<cv::Vec3b>(y, x);
+            uint8_t value = 255 - thisPixel[0];
+
+            thisPixel[0] = value;
+            thisPixel[1] = value;
+            thisPixel[2] = value;
+        }
+    );
+
+    return resultImg;
+}
+
+cv::Mat
 ImgProcessor::grayscaleImage(const cv::Mat& img)
 const
 {
