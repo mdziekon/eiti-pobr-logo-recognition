@@ -128,6 +128,67 @@ const
     return resultImg;
 }
 
+cv::Vec3d
+ImgProcessor::rgb2HSV(const cv::Vec3b opencvRGB)
+const
+{
+    double hue = -1;
+    double sat = -1;
+    double val = -1;
+
+    uint8_t red = opencvRGB[2];
+    uint8_t green = opencvRGB[1];
+    uint8_t blue = opencvRGB[0];
+
+    double tmp = std::min(std::min(red, green), blue);
+
+    val = std::max(std::max(red, green), blue);
+
+    if (tmp == val)
+    {
+        hue = 0;
+    }
+    else
+    {
+        if (red == val)
+        {
+            hue = 0 + ((green - blue) * 60 / (val - tmp));
+        }
+        else if (green == val)
+        {
+            hue = 120 + ((blue - red) * 60 / (val - tmp));
+        }
+        else
+        {
+            hue = 240 + ((red - green) * 60 / (val - tmp));
+        }
+    }
+
+    if (hue < 0)
+    {
+        hue += 360;
+    }
+
+    if (val == 0)
+    {
+        sat = 0;
+    }
+    else
+    {
+        sat = (val - tmp) * 100 / val;
+    }
+
+    val = (100 * val) / 256;
+
+    cv::Vec3d hsv;
+
+    hsv[0] = hue;
+    hsv[1] = sat;
+    hsv[2] = val;
+
+    return hsv;
+}
+
 const void
 ImgProcessor::loadImg(const std::string& imgPath)
 {
@@ -480,65 +541,4 @@ const
     );
 
     return resultImg;
-}
-
-cv::Vec3d
-ImgProcessor::rgb2HSV(const cv::Vec3b opencvRGB)
-const
-{
-    double hue = -1;
-    double sat = -1;
-    double val = -1;
-
-    uint8_t red = opencvRGB[2];
-    uint8_t green = opencvRGB[1];
-    uint8_t blue = opencvRGB[0];
-
-    double tmp = std::min(std::min(red, green), blue);
-
-    val = std::max(std::max(red, green), blue);
-
-    if (tmp == val)
-    {
-        hue = 0;
-    }
-    else
-    {
-        if (red == val)
-        {
-            hue = 0 + ((green - blue) * 60 / (val - tmp));
-        }
-        else if (green == val)
-        {
-            hue = 120 + ((blue - red) * 60 / (val - tmp));
-        }
-        else
-        {
-            hue = 240 + ((red - green) * 60 / (val - tmp));
-        }
-    }
-
-    if (hue < 0)
-    {
-        hue += 360;
-    }
-
-    if (val == 0)
-    {
-        sat = 0;
-    }
-    else
-    {
-        sat = (val - tmp) * 100 / val;
-    }
-
-    val = (100 * val) / 256;
-
-    cv::Vec3d hsv;
-
-    hsv[0] = hue;
-    hsv[1] = sat;
-    hsv[2] = val;
-
-    return hsv;
 }
