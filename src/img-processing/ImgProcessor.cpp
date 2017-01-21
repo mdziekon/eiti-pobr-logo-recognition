@@ -2,6 +2,9 @@
 
 #include <array>
 #include <algorithm>
+#include <functional>
+#include <unordered_map>
+#include <unordered_set>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
@@ -556,6 +559,7 @@ const
         0.0
     );
     std::vector<Segment> segmentsBoundaries;
+    std::unordered_map<double, std::unordered_set<double>> touchingSegments;
 
     double lookupKernelValues[9] = {
         0, 1, 0,
@@ -583,7 +587,7 @@ const
         segmentsIDs,
         lookupKernel,
         0,
-        [&img](const uint64_t& x, const uint64_t& y, double& accumulator, const double& segmentID, const double& kernelValue) -> double
+        [&img, &touchingSegments](const uint64_t& x, const uint64_t& y, double& accumulator, const double& segmentID, const double& kernelValue) -> double
         {
             const auto& imgPixel = img.at<cv::Vec3b>(y, x);
 
@@ -592,16 +596,23 @@ const
                 return 0;
             }
 
-            if (accumulator != 0) {
-                return accumulator;
-            }
             if (kernelValue == 0) {
                 return accumulator;
             }
 
+            if (accumulator != 0) {
+                if (segmentID == 0 || accumulator == segmentID) {
+                    return accumulator;
+                }
+
+                // Segments touching, store that information for merging phase
+                touchingSegments.at(accumulator).insert(segmentID);
+                touchingSegments.at(segmentID).insert(accumulator);
+            }
+
             return segmentID;
         },
-        [&img, &segmentsIDs, &segmentsBoundaries](const uint64_t& x, const uint64_t& y, double& accumulator, double& setSegmentID, const cv::Mat& tt) -> void
+        [&img, &segmentsIDs, &segmentsBoundaries, &touchingSegments](const uint64_t& x, const uint64_t& y, double& accumulator, double& setSegmentID, const cv::Mat& tt) -> void
         {
             const auto& imgPixel = img.at<cv::Vec3b>(y, x);
 
@@ -623,6 +634,7 @@ const
 
                 segmentsIDs.at<double>(y, x) = thisSegmentID;
                 segmentsBoundaries.push_back(newSegment);
+                touchingSegments.insert({ thisSegmentID, {} });
             } else {
                 // Segment exists, update boundaries
 
@@ -635,7 +647,39 @@ const
         }
     );
 
-    return segmentsBoundaries;
+    // Merge touching segments
+    std::vector<std::reference_wrapper<Segment>> segmentsRefs;
+
+    for (auto& segment: segmentsBoundaries) {
+        segmentsRefs.push_back(std::ref(segment));
+    }
+
+    for (uint64_t segmentIdx = 0; segmentIdx < segmentsRefs.size(); segmentIdx++) {
+        const auto& segmentRef = segmentsRefs.at(segmentIdx);
+        auto& segment = segmentRef.get();
+        const auto& touching = touchingSegments.at(segmentIdx + 1);
+
+        for (const auto& touchesIdx: touching) {
+            const auto& touched = segmentsRefs.at(touchesIdx - 1);
+
+            segment.merge(touched);
+            segmentsRefs.at(touchesIdx - 1) = segmentRef;
+        }
+    }
+
+    std::unordered_set<Segment*> uniqSegments;
+    for (const auto& segment: segmentsRefs) {
+        Segment* segmentPtr = &(segment.get());
+
+        uniqSegments.insert(segmentPtr);
+    }
+
+    std::vector<Segment> segments;
+    for (const auto& segmentPtr: uniqSegments) {
+        segments.push_back((*segmentPtr));
+    }
+
+    return segments;
 }
 
 cv::Mat
