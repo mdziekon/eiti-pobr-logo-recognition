@@ -9,7 +9,9 @@
 #include "../utils/error-handler/ErrorHandler.hpp"
 
 namespace consts = pobr::utils::consts;
+
 using ErrorHandler = pobr::utils::ErrorHandler;
+using Segment = pobr::imgProcessing::structs::Segment;
 using ImgProcessor = pobr::imgProcessing::ImgProcessor;
 
 const bool
@@ -541,4 +543,97 @@ const
     );
 
     return resultImg;
+}
+
+std::vector<Segment>
+ImgProcessor::getImageSegments(const cv::Mat& img, const bool& useDiagonalDetection)
+const
+{
+    auto segmentsIDs = cv::Mat(
+        img.rows,
+        img.cols,
+        CV_64F,
+        0.0
+    );
+    std::vector<Segment> segmentsBoundaries;
+
+    double lookupKernelValues[9] = {
+        0, 1, 0,
+        1, 0, 1,
+        0, 1, 0     
+    };
+
+    if (useDiagonalDetection) {
+        lookupKernelValues[0] = 1;
+        lookupKernelValues[2] = 1;
+        lookupKernelValues[6] = 1;
+        lookupKernelValues[8] = 1;
+    }
+
+    auto lookupKernel = cv::Mat(
+        3,
+        3,
+        CV_64F,
+        lookupKernelValues
+    );
+
+    // TODO: Kernel application skips img edges
+    //       replace with forEachPixel maybe?
+    this->applyKernel<double, double, double>(
+        segmentsIDs,
+        lookupKernel,
+        0,
+        [&img](const uint64_t& x, const uint64_t& y, double& accumulator, const double& segmentID, const double& kernelValue) -> double
+        {
+            const auto& imgPixel = img.at<cv::Vec3b>(y, x);
+
+            if (imgPixel[0] == consts::colors::black) {
+                // Short-circuit as there is nothing to do here
+                return 0;
+            }
+
+            if (accumulator != 0) {
+                return accumulator;
+            }
+            if (kernelValue == 0) {
+                return accumulator;
+            }
+
+            return segmentID;
+        },
+        [&img, &segmentsIDs, &segmentsBoundaries](const uint64_t& x, const uint64_t& y, double& accumulator, double& setSegmentID, const cv::Mat& tt) -> void
+        {
+            const auto& imgPixel = img.at<cv::Vec3b>(y, x);
+
+            if (imgPixel[0] == consts::colors::black) {
+                // Short-circuit as there is nothing to do here
+                return;
+            }
+
+            if (accumulator == 0) {
+                // Not IDed yet, create new segment
+
+                const auto thisSegmentID = segmentsBoundaries.size() + 1;
+                Segment newSegment;
+
+                newSegment.xMin = x;
+                newSegment.xMax = x;
+                newSegment.yMin = y;
+                newSegment.yMax = y;
+
+                segmentsIDs.at<double>(y, x) = thisSegmentID;
+                segmentsBoundaries.push_back(newSegment);
+            } else {
+                // Segment exists, update boundaries
+
+                const auto thisSegmentID = accumulator;
+                auto& thisSegment = segmentsBoundaries.at(thisSegmentID - 1);
+
+                segmentsIDs.at<double>(y, x) = thisSegmentID;
+                thisSegment.updateBoundaries(x, y);
+            }
+        }
+    );
+
+    return segmentsBoundaries;
 }

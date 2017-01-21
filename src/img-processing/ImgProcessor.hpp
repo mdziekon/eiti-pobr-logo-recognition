@@ -2,8 +2,11 @@
 #define POBR_IMGPROCESSING_IMGPROCESSOR_HPP
 
 #include <string>
+#include <vector>
 #include <functional>
 #include <opencv2/core/core.hpp>
+
+#include "./structs/Segment.hpp"
 
 namespace pobr::imgProcessing
 {
@@ -21,6 +24,8 @@ namespace pobr::imgProcessing
         cv::Mat grayscaleImage(const cv::Mat& img) const;
         cv::Mat detectEdges(const cv::Mat& img) const;
         cv::Mat unsharpMasking(const cv::Mat& img) const;
+
+        std::vector<pobr::imgProcessing::structs::Segment> getImageSegments(const cv::Mat& img, const bool& useDiagonalDetection = true) const;
 
     protected:
         cv::Mat img;
