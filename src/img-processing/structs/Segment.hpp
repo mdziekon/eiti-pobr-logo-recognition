@@ -27,6 +27,12 @@ namespace pobr::imgProcessing::structs
                 this->yMax = y;
             }
         }
+
+        const void merge(const Segment& other)
+        {
+            this->updateBoundaries(other.xMin, other.yMin);
+            this->updateBoundaries(other.xMax, other.yMax);
+        }
     };
 }
 
