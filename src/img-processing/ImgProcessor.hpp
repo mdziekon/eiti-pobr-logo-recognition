@@ -16,6 +16,8 @@ namespace pobr::imgProcessing
         cv::Mat binarizeImage(const cv::Mat& img, const unsigned int& threshold) const;
         cv::Mat binarizeImage(const cv::Mat& img, const cv::Vec3b& lowerBound, const cv::Vec3b& upperBound) const;
         cv::Mat invertBinaryImage(const cv::Mat& img) const;
+        cv::Mat erodeImage(const cv::Mat& img, const unsigned int& windowSize) const;
+        cv::Mat dilateImage(const cv::Mat& img, const unsigned int& windowSize) const;
         cv::Mat grayscaleImage(const cv::Mat& img) const;
         cv::Mat detectEdges(const cv::Mat& img) const;
         cv::Mat unsharpMasking(const cv::Mat& img) const;

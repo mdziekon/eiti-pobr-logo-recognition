@@ -251,6 +251,96 @@ const
 }
 
 cv::Mat
+ImgProcessor::erodeImage(const cv::Mat& img, const unsigned int& windowSize)
+const
+{
+    auto resultImg = img.clone();
+
+    auto kernel = cv::Mat(
+        windowSize,
+        windowSize,
+        CV_64F
+    );
+
+    double erosionThreshold = 1.0 * (windowSize * windowSize) * consts::colors::white;
+
+    // Initialize kernel values
+    for (unsigned int i = 0; i < windowSize; i++) {
+        for (unsigned int j = 0; j < windowSize; j++) {
+            kernel.at<double>(j, i) = 1;
+        }
+    }
+
+    resultImg = this->applyKernel<cv::Vec3b, double, double>(
+        resultImg,
+        kernel,
+        0.0,
+        [](const uint64_t& x, const uint64_t& y, double& accumulator, const cv::Vec3b& pixel, const double& kernelValue) -> double
+        {
+            return accumulator + (kernelValue * pixel[0]);
+        },
+        [&erosionThreshold](const uint64_t& x, const uint64_t& y, double& accumulator, cv::Vec3b& pixel, const cv::Mat& img) -> void
+        {
+            double value = consts::colors::black;
+
+            if (accumulator == erosionThreshold) {
+                value = consts::colors::white;
+            }
+
+            pixel[0] = value;
+            pixel[1] = value;
+            pixel[2] = value;
+        }
+    );
+
+    return resultImg;
+}
+
+cv::Mat
+ImgProcessor::dilateImage(const cv::Mat& img, const unsigned int& windowSize)
+const
+{
+    auto resultImg = img.clone();
+
+    auto kernel = cv::Mat(
+        windowSize,
+        windowSize,
+        CV_64F
+    );
+
+    // Initialize kernel values
+    for (unsigned int i = 0; i < windowSize; i++) {
+        for (unsigned int j = 0; j < windowSize; j++) {
+            kernel.at<double>(j, i) = 1;
+        }
+    }
+
+    resultImg = this->applyKernel<cv::Vec3b, double, double>(
+        resultImg,
+        kernel,
+        0.0,
+        [](const uint64_t& x, const uint64_t& y, double& accumulator, const cv::Vec3b& pixel, const double& kernelValue) -> double
+        {
+            return accumulator + (kernelValue * pixel[0]);
+        },
+        [](const uint64_t& x, const uint64_t& y, double& accumulator, cv::Vec3b& pixel, const cv::Mat& img) -> void
+        {
+            double value = consts::colors::black;
+
+            if (accumulator > 0) {
+                value = consts::colors::white;
+            }
+
+            pixel[0] = value;
+            pixel[1] = value;
+            pixel[2] = value;
+        }
+    );
+
+    return resultImg;
+}
+
+cv::Mat
 ImgProcessor::grayscaleImage(const cv::Mat& img)
 const
 {
