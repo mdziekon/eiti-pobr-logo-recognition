@@ -146,12 +146,29 @@ const
 
     auto img = this->img;
 
-    img = this->unsharpMasking(img);
+    // img = this->unsharpMasking(img);
+
+    // Binarization
     img = this->binarizeImage(
         img,
         cv::Vec3b(0, 125, 0),
         cv::Vec3b(255, 255, 255)
     );
+    img = this->invertBinaryImage(img);
+
+    // TODO: Make sure this is in proper order
+    img = this->erodeImage(
+        img,
+        3
+    );
+    img = this->dilateImage(
+        img,
+        3
+    );
+
+    // TODO: Segmentation
+
+    // TODO: Detection
 
     cv::imshow("test", img);
 
