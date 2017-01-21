@@ -637,3 +637,37 @@ const
 
     return segmentsBoundaries;
 }
+
+cv::Mat
+ImgProcessor::drawSegmentsBBoxes(
+    const cv::Mat& img,
+    const std::vector<pobr::imgProcessing::structs::Segment>& segments,
+    const cv::Vec3b& borderColor
+)
+const
+{
+    auto resultImg = img.clone();
+
+    for (auto& segment: segments) {
+        // TODO: Safeguards maybe?
+
+        for (uint64_t x = segment.xMin - 1; x <= segment.xMax + 1; x++) {
+            auto& point1 = resultImg.at<cv::Vec3b>(segment.yMin - 1, x);
+            auto& point2 = resultImg.at<cv::Vec3b>(segment.yMax + 1, x);
+
+            point1[0] = point2[0] = borderColor[0];
+            point1[1] = point2[1] = borderColor[1];
+            point1[2] = point2[2] = borderColor[2];
+        }
+        for (uint64_t y = segment.yMin - 1; y <= segment.yMax + 1; y++) {
+            auto& point1 = resultImg.at<cv::Vec3b>(y, segment.xMin - 1);
+            auto& point2 = resultImg.at<cv::Vec3b>(y, segment.xMax + 1);
+
+            point1[0] = point2[0] = borderColor[0];
+            point1[1] = point2[1] = borderColor[1];
+            point1[2] = point2[2] = borderColor[2];
+        }
+    }
+
+    return resultImg;
+}

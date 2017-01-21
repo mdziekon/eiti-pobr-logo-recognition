@@ -27,6 +27,12 @@ namespace pobr::imgProcessing
 
         std::vector<pobr::imgProcessing::structs::Segment> getImageSegments(const cv::Mat& img, const bool& useDiagonalDetection = true) const;
 
+        cv::Mat drawSegmentsBBoxes(
+            const cv::Mat& img,
+            const std::vector<pobr::imgProcessing::structs::Segment>& segments,
+            const cv::Vec3b& borderColor = { 0, 0, 255 }
+        ) const;
+
     protected:
         cv::Mat img;
 
