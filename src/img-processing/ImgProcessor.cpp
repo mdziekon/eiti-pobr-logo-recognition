@@ -836,7 +836,19 @@ ImgProcessor::findImageLogoCandidates(
 )
 const
 {
+    std::vector<structs::Candidate> candidates;
 
+    for (const auto& segment: segments) {
+        if (segment.getArea() < 225) {
+            continue;
+        }
+
+        auto candidate = structs::Candidate(segment, 0);
+
+        candidates.push_back(candidate);
+    }
+
+    return candidates;
 }
 
 cv::Mat
