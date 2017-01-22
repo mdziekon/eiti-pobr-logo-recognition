@@ -691,10 +691,12 @@ const
 
     int currentSegmentID = 1;
 
-    for (int y = 1; y < img.rows - 1; ++y) {
-        for (int x = 1; x < img.cols - 1; ++x) {
+    this->forEachPixel(
+        img,
+        [&](const uint64_t& x, const uint64_t& y) -> void
+        {
             if (segmentedImg(y, x)[0] != consts::colors::white) {
-                continue;
+                return;
             }
 
             std::stack<std::pair<int, int>> neighbours;
@@ -741,16 +743,22 @@ const
                 ++currentSegmentID;
             }
         }
-    }
+    );
 
     std::unordered_map<int, Segment> segmentsMap;
 
-    for (int y = 1; y < img.rows - 1; ++y) {
-        for (int x = 1; x < img.cols - 1; ++x) {
+    this->forEachPixel(
+        img,
+        [&](const uint64_t& x, const uint64_t& y) -> void
+        {
+            if (x == 0 || x == img.cols - 1 || y == 0 || y == img.rows - 1) {
+                return;
+            }
+
             const auto& thisSegmentID = segmentedImg(y, x)[0];
 
             if (thisSegmentID == consts::colors::black) {
-                continue;
+                return;
             }
 
             if (segmentsMap.count(thisSegmentID) == 0) {
@@ -761,15 +769,12 @@ const
                 seg.yMin = y;
                 seg.yMax = y;
 
-                segmentsMap.insert({
-                    thisSegmentID,
-                    seg
-                });
+                segmentsMap.insert({ thisSegmentID, seg });
             }
 
             segmentsMap.at(thisSegmentID).updateBoundaries(x, y);
         }
-    }
+    );
 
     std::vector<Segment> segments;
 
