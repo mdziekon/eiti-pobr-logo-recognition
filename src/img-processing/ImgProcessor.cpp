@@ -550,7 +550,7 @@ const
 }
 
 std::vector<Segment>
-ImgProcessor::getImageSegments(const cv::Mat& img, const bool& useDiagonalDetection)
+ImgProcessor::getImageSegmentsScanMerge(const cv::Mat& img, const bool& useDiagonalDetection)
 const
 {
     auto segmentsIDs = cv::Mat(
