@@ -588,7 +588,7 @@ const
         segmentsIDs,
         lookupKernel,
         0,
-        [&img, &touchingSegments](const uint64_t& x, const uint64_t& y, double& accumulator, const double& segmentID, const double& kernelValue) -> double
+        [&](const uint64_t& x, const uint64_t& y, double& accumulator, const double& segmentID, const double& kernelValue) -> double
         {
             const auto& imgPixel = img.at<cv::Vec3b>(y, x);
 
@@ -613,7 +613,7 @@ const
 
             return segmentID;
         },
-        [&img, &segmentsIDs, &segmentsBoundaries, &touchingSegments](const uint64_t& x, const uint64_t& y, double& accumulator, double& setSegmentID, const cv::Mat& tt) -> void
+        [&](const uint64_t& x, const uint64_t& y, double& accumulator, double& setSegmentID, const cv::Mat& tt) -> void
         {
             const auto& imgPixel = img.at<cv::Vec3b>(y, x);
 
