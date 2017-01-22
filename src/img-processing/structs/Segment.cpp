@@ -30,11 +30,16 @@ Segment::updatePixels(const cv::Mat_<cv::Vec3i>& segmentedImg, const int& segmen
 
     for (int x = 0; x < (this->xMax - this->xMin + 1); x++) {
         for (int y = 0; y < (this->yMax - this->yMin + 1); y++) {
-            if (segmentedImg.at<cv::Vec3b>(this->yMin + y, this->xMin + x)[0] != segmentID) {
-                continue;
-            }
+            auto& thisSegmentID = segmentedImg(this->yMin + y, this->xMin + x)[0];
 
-            this->pixels(y, x)[0] = consts::colors::white;
+            this->pixels(y, x)[1] = consts::colors::black;
+            this->pixels(y, x)[2] = consts::colors::black;
+
+            if (thisSegmentID != segmentID) {
+                this->pixels(y, x)[0] = consts::colors::black;
+            } else {
+                this->pixels(y, x)[0] = consts::colors::white;
+            }
         }
     }
 }
