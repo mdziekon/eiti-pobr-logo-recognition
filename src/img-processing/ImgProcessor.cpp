@@ -18,6 +18,7 @@ namespace consts = pobr::utils::consts;
 using ErrorHandler = pobr::utils::ErrorHandler;
 using PerformanceTimer = pobr::utils::PerformanceTimer;
 using Segment = pobr::imgProcessing::structs::Segment;
+using Candidate = pobr::imgProcessing::structs::Candidate;
 using ImgProcessor = pobr::imgProcessing::ImgProcessor;
 
 const bool
@@ -823,6 +824,16 @@ const
     }
 
     return segments;
+}
+
+std::vector<structs::Candidate>
+ImgProcessor::findImageLogoCandidates(
+    const cv::Mat& img,
+    const std::vector<structs::Segment>& segments
+)
+const
+{
+
 }
 
 cv::Mat

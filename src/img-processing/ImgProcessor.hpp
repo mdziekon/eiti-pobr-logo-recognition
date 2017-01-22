@@ -7,6 +7,9 @@
 #include <opencv2/core/core.hpp>
 
 #include "./structs/Segment.hpp"
+#include "./structs/Candidate.hpp"
+
+namespace structs = pobr::imgProcessing::structs;
 
 namespace pobr::imgProcessing
 {
@@ -25,8 +28,10 @@ namespace pobr::imgProcessing
         cv::Mat detectEdges(const cv::Mat& img) const;
         cv::Mat unsharpMasking(const cv::Mat& img) const;
 
-        std::vector<pobr::imgProcessing::structs::Segment> getImageSegmentsScanMerge(const cv::Mat& img, const bool& useDiagonalDetection = true) const;
-        std::vector<pobr::imgProcessing::structs::Segment> getImageSegmentsFloodFill(const cv::Mat& img) const;
+        std::vector<structs::Segment> getImageSegmentsScanMerge(const cv::Mat& img, const bool& useDiagonalDetection = true) const;
+        std::vector<structs::Segment> getImageSegmentsFloodFill(const cv::Mat& img) const;
+
+        std::vector<structs::Candidate> findImageLogoCandidates(const cv::Mat& img, const std::vector<structs::Segment>& segments) const;
 
         cv::Mat drawSegmentsBBoxes(
             const cv::Mat& img,
