@@ -813,9 +813,12 @@ const
             }
 
             segmentsMap.at(thisSegmentID).updateBoundaries(x, y);
-            segmentsMap.at(thisSegmentID).updatePixels(segmentedImg, thisSegmentID);
         }
     );
+
+    for (auto& segment: segmentsMap) {
+        segment.second.updatePixels(segmentedImg, segment.first);
+    }
 
     std::vector<Segment> segments;
 
