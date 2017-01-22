@@ -812,6 +812,7 @@ const
             }
 
             segmentsMap.at(thisSegmentID).updateBoundaries(x, y);
+            segmentsMap.at(thisSegmentID).updatePixels(segmentedImg, thisSegmentID);
         }
     );
 
