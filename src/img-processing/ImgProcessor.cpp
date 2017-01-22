@@ -1,8 +1,9 @@
 #include "ImgProcessor.hpp"
 
-#include <array>
 #include <algorithm>
 #include <functional>
+#include <array>
+#include <stack>
 #include <unordered_map>
 #include <unordered_set>
 #include <opencv2/core/core.hpp>
@@ -677,6 +678,103 @@ const
     std::vector<Segment> segments;
     for (const auto& segmentPtr: uniqSegments) {
         segments.push_back((*segmentPtr));
+    }
+
+    return segments;
+}
+
+std::vector<Segment>
+ImgProcessor::getImageSegmentsFloodFill(const cv::Mat& img)
+const
+{
+    cv::Mat_<cv::Vec3i> segmentedImg = img.clone();
+
+    int currentSegmentID = 1;
+
+    for (int y = 1; y < img.rows - 1; ++y) {
+        for (int x = 1; x < img.cols - 1; ++x) {
+            if (segmentedImg(y, x)[0] != consts::colors::white) {
+                continue;
+            }
+
+            std::stack<std::pair<int, int>> neighbours;
+
+            neighbours.push({ x, y });
+
+            // FloodFill
+            while (!neighbours.empty()) {
+                int neighbourX = neighbours.top().first;
+                int neighbourY = neighbours.top().second;
+
+                neighbours.pop();
+
+                segmentedImg(neighbourY,neighbourX)[0] = currentSegmentID;
+
+                for (int adjacentY = -1; adjacentY <= 1; ++adjacentY) {
+                    for (int adjacentX = -1; adjacentX <= 1; ++adjacentX) {
+                        if (adjacentY == 0 || adjacentX == 0) {
+                            continue;
+                        }
+                        if (neighbourY + adjacentY < 0 || neighbourY + adjacentY >= img.rows) {
+                            continue;
+                        }
+                        if (neighbourX + adjacentX < 0 || neighbourX + adjacentX >= img.cols) {
+                            continue;
+                        }
+                        if (segmentedImg(neighbourY + adjacentY, neighbourX + adjacentX)[0] != consts::colors::white) {
+                            continue;
+                        }
+
+                        neighbours.push({
+                            neighbourX + adjacentX,
+                            neighbourY + adjacentY
+                        });
+                    }
+                }
+            }
+
+            // Segmentation pixels can still hold WHITE (255) or BLACK (0) values
+            // make sure we do not use those
+            if ((currentSegmentID + 2) % 256 == 0) {
+                currentSegmentID += 3;
+            } else {
+                ++currentSegmentID;
+            }
+        }
+    }
+
+    std::unordered_map<int, Segment> segmentsMap;
+
+    for (int y = 1; y < img.rows - 1; ++y) {
+        for (int x = 1; x < img.cols - 1; ++x) {
+            const auto& thisSegmentID = segmentedImg(y, x)[0];
+
+            if (thisSegmentID == consts::colors::black) {
+                continue;
+            }
+
+            if (segmentsMap.count(thisSegmentID) == 0) {
+                Segment seg;
+
+                seg.xMin = x;
+                seg.xMax = x;
+                seg.yMin = y;
+                seg.yMax = y;
+
+                segmentsMap.insert({
+                    thisSegmentID,
+                    seg
+                });
+            }
+
+            segmentsMap.at(thisSegmentID).updateBoundaries(x, y);
+        }
+    }
+
+    std::vector<Segment> segments;
+
+    for (auto& segment: segmentsMap) {
+        segments.push_back(segment.second);
     }
 
     return segments;

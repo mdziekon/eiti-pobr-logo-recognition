@@ -26,6 +26,7 @@ namespace pobr::imgProcessing
         cv::Mat unsharpMasking(const cv::Mat& img) const;
 
         std::vector<pobr::imgProcessing::structs::Segment> getImageSegments(const cv::Mat& img, const bool& useDiagonalDetection = true) const;
+        std::vector<pobr::imgProcessing::structs::Segment> getImageSegmentsFloodFill(const cv::Mat& img) const;
 
         cv::Mat drawSegmentsBBoxes(
             const cv::Mat& img,
