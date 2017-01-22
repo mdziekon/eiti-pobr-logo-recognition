@@ -754,7 +754,7 @@ const
 
                 for (int adjacentY = -1; adjacentY <= 1; ++adjacentY) {
                     for (int adjacentX = -1; adjacentX <= 1; ++adjacentX) {
-                        if (adjacentY == 0 || adjacentX == 0) {
+                        if (adjacentY == 0 && adjacentX == 0) {
                             continue;
                         }
                         if (neighbourY + adjacentY < 0 || neighbourY + adjacentY >= img.rows) {
