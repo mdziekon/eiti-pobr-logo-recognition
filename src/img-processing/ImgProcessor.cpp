@@ -229,7 +229,7 @@ const
         cv::Vec3b(0, 0, 75),
         cv::Vec3b(180, 120, 255)
     );
-    img = this->invertBinaryImage(img);
+    // img = this->invertBinaryImage(img);
 
     profilerBinarization.stop();
 
