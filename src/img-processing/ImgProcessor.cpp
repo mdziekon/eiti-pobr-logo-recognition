@@ -11,10 +11,12 @@
 
 #include "../utils/consts.hpp"
 #include "../utils/error-handler/ErrorHandler.hpp"
+#include "../utils/performance-timer/PerformanceTimer.hpp"
 
 namespace consts = pobr::utils::consts;
 
 using ErrorHandler = pobr::utils::ErrorHandler;
+using PerformanceTimer = pobr::utils::PerformanceTimer;
 using Segment = pobr::imgProcessing::structs::Segment;
 using ImgProcessor = pobr::imgProcessing::ImgProcessor;
 
@@ -214,8 +216,13 @@ const
     auto img = this->img;
 
     // img = this->unsharpMasking(img);
+    PerformanceTimer profilerBinarization;
+    PerformanceTimer profilerShapeEnhancements;
+    PerformanceTimer profilerSegmentation;
 
-    // Binarization
+    // --- Binarization
+    profilerBinarization.start();
+
     img = this->binarizeImage(
         img,
         cv::Vec3b(0, 125, 0),
@@ -223,7 +230,18 @@ const
     );
     img = this->invertBinaryImage(img);
 
+    profilerBinarization.stop();
+
+    ErrorHandler::notice(
+        std::string("Binarization took: ") +
+        std::to_string(profilerBinarization.getDurationNS() / 1000000) +
+        std::string("ms")
+    );
+
+    // --- Shape enhancements
     // TODO: Make sure this is in proper order
+    profilerShapeEnhancements.start();
+
     img = this->erodeImage(
         img,
         3
@@ -233,9 +251,30 @@ const
         3
     );
 
-    // TODO: Segmentation
+    profilerShapeEnhancements.stop();
+
+    ErrorHandler::notice(
+        std::string("ShapeEnhancements took: ") +
+        std::to_string(profilerShapeEnhancements.getDurationNS() / 1000000) +
+        std::string("ms")
+    );
+
+    // --- Segmentation
+    profilerSegmentation.start();
+
+    auto segments = this->getImageSegmentsFloodFill(img);
+
+    profilerSegmentation.stop();
+
+    ErrorHandler::notice(
+        std::string("Segmentation took: ") +
+        std::to_string(profilerSegmentation.getDurationNS() / 1000000) +
+        std::string("ms")
+    );
 
     // TODO: Detection
+
+    img = this->drawSegmentsBBoxes(img, segments);
 
     cv::imshow("test", img);
 
