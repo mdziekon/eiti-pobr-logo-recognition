@@ -2,6 +2,7 @@
 #define POBR_IMGPROCESSING_STRUCTS_SEGMENT_HPP
 
 #include <cstdint>
+#include <vector>
 #include <opencv2/core/core.hpp>
 
 #include "../../utils/consts.hpp"
@@ -24,6 +25,13 @@ namespace pobr::imgProcessing::structs
         const void updatePixels(const cv::Mat_<cv::Vec3i>& segmentedImg, const int& segmentID);
 
         const void merge(const Segment& other);
+
+        const uint64_t getArea() const;
+        const uint64_t getCircumference() const;
+        const double getW3() const; // Malinowska
+        const double getNormalMoment(const uint64_t& p, const uint64_t& q) const;
+        const double getCentralMoment(const uint64_t& p, const uint64_t& q, const double& m00, const double& m10, const double& m01) const;
+        const double getHuMomentInvariant(const uint8_t& no) const;
     };
 }
 
