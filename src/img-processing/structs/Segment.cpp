@@ -1,5 +1,7 @@
 #include "Segment.hpp"
 
+#include <cmath>
+
 using Segment = pobr::imgProcessing::structs::Segment;
 
 const void
