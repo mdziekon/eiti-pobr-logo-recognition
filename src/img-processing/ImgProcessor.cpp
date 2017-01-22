@@ -273,9 +273,30 @@ const
         std::string("ms")
     );
 
-    // TODO: Detection
 
-    img = this->drawSegmentsBBoxes(img, segments);
+    // --- Detection
+    // 1. get candidates
+    auto candidates = this->findImageLogoCandidates(img, segments);
+
+    std::vector<structs::Segment> segs;
+    for (auto& cand: candidates) {
+        ErrorHandler::notice("-------");
+        ErrorHandler::notice("segment " + std::to_string(cand.segment.xMin) + "x" + std::to_string(cand.segment.yMin));
+        ErrorHandler::notice("hu 1 = " + std::to_string(cand.segment.getHuMomentInvariant(1)));
+        ErrorHandler::notice("hu 2 = " + std::to_string(cand.segment.getHuMomentInvariant(2)));
+        ErrorHandler::notice("hu 3 = " + std::to_string(cand.segment.getHuMomentInvariant(3)));
+        ErrorHandler::notice("hu 4 = " + std::to_string(cand.segment.getHuMomentInvariant(4)));
+        ErrorHandler::notice("hu 5 = " + std::to_string(cand.segment.getHuMomentInvariant(5)));
+        ErrorHandler::notice("hu 6 = " + std::to_string(cand.segment.getHuMomentInvariant(6)));
+        ErrorHandler::notice("hu 7 = " + std::to_string(cand.segment.getHuMomentInvariant(7)));
+
+        segs.push_back(cand.segment);
+    }
+
+    // 2. match letters
+    // TODO
+
+    img = this->drawSegmentsBBoxes(img, segs);
 
     cv::imshow("test", img);
 
