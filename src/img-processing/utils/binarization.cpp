@@ -98,3 +98,47 @@ binarization::invertBinaryImage(const cv::Mat& img)
 
     return resultImg;
 }
+
+cv::Mat
+binarization::detectEdges(const cv::Mat& img)
+{
+    auto resultImg = img.clone();
+
+    double kernelValues[9] = {
+        -1, -1, -1,
+        -1, 8, -1,
+        -1, -1, -1
+    };
+
+    auto kernel = cv::Mat(
+        3,
+        3,
+        CV_64F,
+        kernelValues
+    );
+
+    resultImg = converters::grayscaleImage(resultImg);
+
+    resultImg = matrixOps::applyKernel<cv::Vec3b, double, double>(
+        resultImg,
+        kernel,
+        0.0,
+        [](const uint64_t& x, const uint64_t& y, double& accumulator, const cv::Vec3b& pixel, const double& kernelValue) -> double
+        {
+            return accumulator + (kernelValue * pixel[0]);
+        },
+        [](const uint64_t& x, const uint64_t& y, double& accumulator, cv::Vec3b& pixel, const cv::Mat& img) -> void
+        {
+            double value = accumulator;
+
+            value = std::min(value, 255.0);
+            value = std::max(value, 0.0);
+
+            pixel[0] = value;
+            pixel[1] = value;
+            pixel[2] = value;
+        }
+    );
+
+    return resultImg;
+}

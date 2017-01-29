@@ -18,8 +18,6 @@ namespace pobr::imgProcessing
         const void loadImg(const std::string& imgPath);
         const void process() const;
 
-        cv::Mat detectEdges(const cv::Mat& img) const;
-
         std::vector<structs::Candidate> findImageLogoCandidates(const std::vector<structs::Segment>& segments) const;
 
         cv::Mat drawSegmentsBBoxes(
