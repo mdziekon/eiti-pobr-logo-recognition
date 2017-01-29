@@ -9,7 +9,8 @@ namespace pobr::main
     class App
     {
     public:
-        App(const std::vector<std::string>& arguments);
+        App() = delete;
+        explicit App(const std::vector<std::string>& arguments);
     };
 }
 
