@@ -12,10 +12,16 @@
 #include "../utils/consts.hpp"
 #include "../utils/error-handler/ErrorHandler.hpp"
 #include "../utils/performance-timer/PerformanceTimer.hpp"
+#include "./utils/converters.hpp"
 #include "./utils/matrix-ops.hpp"
+#include "./utils/binarization.hpp"
+#include "./utils/enhance.hpp"
 
 namespace consts = pobr::utils::consts;
+namespace converters = pobr::imgProcessing::utils::converters;
 namespace matrixOps = pobr::imgProcessing::utils::matrixOps;
+namespace binarization = pobr::imgProcessing::utils::binarization;
+namespace enhance = pobr::imgProcessing::utils::enhance;
 
 using ErrorHandler = pobr::utils::ErrorHandler;
 using PerformanceTimer = pobr::utils::PerformanceTimer;
@@ -39,67 +45,6 @@ const
     }
 
     ErrorHandler::error("ImgProcessor has no image loaded yet!");
-}
-
-cv::Vec3d
-ImgProcessor::rgb2HSV(const cv::Vec3b opencvRGB)
-const
-{
-    double hue = -1;
-    double sat = -1;
-    double val = -1;
-
-    uint8_t red = opencvRGB[2];
-    uint8_t green = opencvRGB[1];
-    uint8_t blue = opencvRGB[0];
-
-    double tmp = std::min(std::min(red, green), blue);
-
-    val = std::max(std::max(red, green), blue);
-
-    if (tmp == val)
-    {
-        hue = 0;
-    }
-    else
-    {
-        if (red == val)
-        {
-            hue = 0 + ((green - blue) * 60 / (val - tmp));
-        }
-        else if (green == val)
-        {
-            hue = 120 + ((blue - red) * 60 / (val - tmp));
-        }
-        else
-        {
-            hue = 240 + ((red - green) * 60 / (val - tmp));
-        }
-    }
-
-    if (hue < 0)
-    {
-        hue += 360;
-    }
-
-    if (val == 0)
-    {
-        sat = 0;
-    }
-    else
-    {
-        sat = (val - tmp) * 100 / val;
-    }
-
-    val = (100 * val) / 256;
-
-    cv::Vec3d hsv;
-
-    hsv[0] = hue;
-    hsv[1] = sat;
-    hsv[2] = val;
-
-    return hsv;
 }
 
 const void
@@ -168,12 +113,12 @@ const
 
     profiler.start();
 
-    resultImg = this->binarizeImage(
+    resultImg = binarization::binarizeImage(
         resultImg,
         cv::Vec3b(0, 0, 75),
         cv::Vec3b(180, 120, 255)
     );
-    // resultImg = this->invertBinaryImage(resultImg);
+    // resultImg = binarization::invertBinaryImage(resultImg);
 
     profiler.stop();
 
@@ -197,11 +142,11 @@ const
     // TODO: Make sure this is in proper order
     profiler.start();
 
-    // resultImg = this->erodeImage(
+    // resultImg = enhance::erodeImage(
     //     resultImg,
     //     3
     // );
-    // resultImg = this->dilateImage(
+    // resultImg = enhance::dilateImage(
     //     resultImg,
     //     3
     // );
@@ -312,212 +257,6 @@ const
     return segments;
 }
 
-
-cv::Mat
-ImgProcessor::binarizeImage(const cv::Mat& img, const unsigned int& threshold)
-const
-{
-    auto resultImg = img.clone();
-
-    matrixOps::forEachPixel(
-        img,
-        [&](const uint64_t& x, const uint64_t& y) -> void
-        {
-            auto& thisPixel = img.at<cv::Vec3b>(y, x);
-
-            uint8_t value;
-            cv::Vec3d hsv = this->rgb2HSV(thisPixel);
-
-            if (thisPixel[0] > threshold && thisPixel[1] > threshold && thisPixel[2] > threshold)
-            {
-                value = 255;
-            }
-            else if (hsv[0] > 85 && hsv[0] < 195 && hsv[2] > 50)
-            {
-                value = 255;
-            }
-            else
-            {
-                value = 0;
-            }
-
-            resultImg.at<cv::Vec3b>(y, x)[0] = value;
-            resultImg.at<cv::Vec3b>(y, x)[1] = value;
-            resultImg.at<cv::Vec3b>(y, x)[2] = value;
-        }
-    );
-
-    return resultImg;
-}
-
-cv::Mat
-ImgProcessor::binarizeImage(const cv::Mat& img, const cv::Vec3b& lowerBound, const cv::Vec3b& upperBound)
-const
-{
-    auto resultImg = img.clone();
-
-    matrixOps::forEachPixel(
-        img,
-        [&](const uint64_t& x, const uint64_t& y) -> void
-        {
-            auto& thisPixel = resultImg.at<cv::Vec3b>(y, x);
-
-            uint8_t value = consts::colors::white;
-
-            if (thisPixel[0] < lowerBound[0] || thisPixel[0] > upperBound[0]) {
-                value = consts::colors::black;
-            }
-            if (thisPixel[1] < lowerBound[1] || thisPixel[1] > upperBound[1]) {
-                value = consts::colors::black;
-            }
-            if (thisPixel[2] < lowerBound[2] || thisPixel[2] > upperBound[2]) {
-                value = consts::colors::black;
-            }
-
-            thisPixel[0] = value;
-            thisPixel[1] = value;
-            thisPixel[2] = value;
-        }
-    );
-
-    return resultImg;
-}
-
-cv::Mat
-ImgProcessor::invertBinaryImage(const cv::Mat& img)
-const
-{
-    auto resultImg = img.clone();
-
-    matrixOps::forEachPixel(
-        img,
-        [&](const uint64_t& x, const uint64_t& y) -> void
-        {
-            auto& thisPixel = resultImg.at<cv::Vec3b>(y, x);
-            uint8_t value = 255 - thisPixel[0];
-
-            thisPixel[0] = value;
-            thisPixel[1] = value;
-            thisPixel[2] = value;
-        }
-    );
-
-    return resultImg;
-}
-
-cv::Mat
-ImgProcessor::erodeImage(const cv::Mat& img, const unsigned int& windowSize)
-const
-{
-    auto resultImg = img.clone();
-
-    auto kernel = cv::Mat(
-        windowSize,
-        windowSize,
-        CV_64F
-    );
-
-    double erosionThreshold = 1.0 * (windowSize * windowSize) * consts::colors::white;
-
-    // Initialize kernel values
-    for (unsigned int i = 0; i < windowSize; i++) {
-        for (unsigned int j = 0; j < windowSize; j++) {
-            kernel.at<double>(j, i) = 1;
-        }
-    }
-
-    resultImg = matrixOps::applyKernel<cv::Vec3b, double, double>(
-        resultImg,
-        kernel,
-        0.0,
-        [](const uint64_t& x, const uint64_t& y, double& accumulator, const cv::Vec3b& pixel, const double& kernelValue) -> double
-        {
-            return accumulator + (kernelValue * pixel[0]);
-        },
-        [&erosionThreshold](const uint64_t& x, const uint64_t& y, double& accumulator, cv::Vec3b& pixel, const cv::Mat& img) -> void
-        {
-            double value = consts::colors::black;
-
-            if (accumulator == erosionThreshold) {
-                value = consts::colors::white;
-            }
-
-            pixel[0] = value;
-            pixel[1] = value;
-            pixel[2] = value;
-        }
-    );
-
-    return resultImg;
-}
-
-cv::Mat
-ImgProcessor::dilateImage(const cv::Mat& img, const unsigned int& windowSize)
-const
-{
-    auto resultImg = img.clone();
-
-    auto kernel = cv::Mat(
-        windowSize,
-        windowSize,
-        CV_64F
-    );
-
-    // Initialize kernel values
-    for (unsigned int i = 0; i < windowSize; i++) {
-        for (unsigned int j = 0; j < windowSize; j++) {
-            kernel.at<double>(j, i) = 1;
-        }
-    }
-
-    resultImg = matrixOps::applyKernel<cv::Vec3b, double, double>(
-        resultImg,
-        kernel,
-        0.0,
-        [](const uint64_t& x, const uint64_t& y, double& accumulator, const cv::Vec3b& pixel, const double& kernelValue) -> double
-        {
-            return accumulator + (kernelValue * pixel[0]);
-        },
-        [](const uint64_t& x, const uint64_t& y, double& accumulator, cv::Vec3b& pixel, const cv::Mat& img) -> void
-        {
-            double value = consts::colors::black;
-
-            if (accumulator > 0) {
-                value = consts::colors::white;
-            }
-
-            pixel[0] = value;
-            pixel[1] = value;
-            pixel[2] = value;
-        }
-    );
-
-    return resultImg;
-}
-
-cv::Mat
-ImgProcessor::grayscaleImage(const cv::Mat& img)
-const
-{
-    auto resultImg = img.clone();
-
-    matrixOps::forEachPixel(
-        img,
-        [&](const uint64_t& x, const uint64_t& y) -> void
-        {
-            auto& thisPixel = img.at<cv::Vec3b>(y, x);
-
-            uint8_t value = (thisPixel[0] + thisPixel[1] + thisPixel[2]) / 3;
-
-            resultImg.at<cv::Vec3b>(y, x)[0] = value;
-            resultImg.at<cv::Vec3b>(y, x)[1] = value;
-            resultImg.at<cv::Vec3b>(y, x)[2] = value;
-        }
-    );
-
-    return resultImg;
-}
-
 cv::Mat
 ImgProcessor::detectEdges(const cv::Mat& img)
 const
@@ -537,7 +276,7 @@ const
         kernelValues
     );
 
-    resultImg = this->grayscaleImage(resultImg);
+    resultImg = converters::grayscaleImage(resultImg);
 
     resultImg = matrixOps::applyKernel<cv::Vec3b, double, double>(
         resultImg,
@@ -557,63 +296,6 @@ const
             pixel[0] = value;
             pixel[1] = value;
             pixel[2] = value;
-        }
-    );
-
-    return resultImg;
-}
-
-cv::Mat
-ImgProcessor::unsharpMasking(const cv::Mat& img)
-const
-{
-    auto resultImg = img.clone();
-
-    double kernelValues[25] = {
-        1,  4,    6,  4, 1,
-        4, 16,   24, 16, 4,
-        6, 24, -476, 24, 6,
-        4, 16,   24, 16, 4,
-        1,  4,    6,  4, 1        
-    };
-
-    auto kernel = cv::Mat(
-        5,
-        5,
-        CV_64F,
-        kernelValues
-    );
-
-    std::array<double, 3> accumulatorInit = { { 0.0, 0.0, 0.0 } };
-
-    resultImg = matrixOps::applyKernel<cv::Vec3b, std::array<double, 3>, double>(
-        resultImg,
-        kernel,
-        accumulatorInit,
-        [](const uint64_t& x, const uint64_t& y, std::array<double, 3>& accumulator, const cv::Vec3b& pixel, const double& kernelValue) -> std::array<double, 3>
-        {
-            accumulator[0] = accumulator[0] + (kernelValue * pixel[0]);
-            accumulator[1] = accumulator[1] + (kernelValue * pixel[1]);
-            accumulator[2] = accumulator[2] + (kernelValue * pixel[2]);
-
-            return accumulator;
-        },
-        [](const uint64_t& x, const uint64_t& y, std::array<double, 3>& accumulator, cv::Vec3b& pixel, const cv::Mat& img) -> void
-        {
-            accumulator[0] = accumulator[0] / 256 * -1;
-            accumulator[1] = accumulator[1] / 256 * -1;
-            accumulator[2] = accumulator[2] / 256 * -1;
-
-            accumulator[0] = std::min(accumulator[0], 255.0);
-            accumulator[0] = std::max(accumulator[0], 0.0);
-            accumulator[1] = std::min(accumulator[1], 255.0);
-            accumulator[1] = std::max(accumulator[1], 0.0);
-            accumulator[2] = std::min(accumulator[2], 255.0);
-            accumulator[2] = std::max(accumulator[2], 0.0);
-
-            pixel[0] = accumulator[0];
-            pixel[1] = accumulator[1];
-            pixel[2] = accumulator[2];
         }
     );
 

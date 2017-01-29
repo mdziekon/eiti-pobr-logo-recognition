@@ -19,14 +19,7 @@ namespace pobr::imgProcessing
         const void loadImg(const std::string& imgPath);
         const void process() const;
 
-        cv::Mat binarizeImage(const cv::Mat& img, const unsigned int& threshold) const;
-        cv::Mat binarizeImage(const cv::Mat& img, const cv::Vec3b& lowerBound, const cv::Vec3b& upperBound) const;
-        cv::Mat invertBinaryImage(const cv::Mat& img) const;
-        cv::Mat erodeImage(const cv::Mat& img, const unsigned int& windowSize) const;
-        cv::Mat dilateImage(const cv::Mat& img, const unsigned int& windowSize) const;
-        cv::Mat grayscaleImage(const cv::Mat& img) const;
         cv::Mat detectEdges(const cv::Mat& img) const;
-        cv::Mat unsharpMasking(const cv::Mat& img) const;
 
         std::vector<structs::Segment> getImageSegmentsScanMerge(const cv::Mat& img, const bool& useDiagonalDetection = true) const;
         std::vector<structs::Segment> getImageSegmentsFloodFill(const cv::Mat& img) const;
@@ -44,8 +37,6 @@ namespace pobr::imgProcessing
 
         const bool isReady() const;
         const void assertIsReady() const;
-
-        cv::Vec3d rgb2HSV(const cv::Vec3b opencvRGB) const;
 
         cv::Mat processPreEnhance(const cv::Mat& img) const;
         cv::Mat processBinarize(const cv::Mat& img) const;
