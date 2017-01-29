@@ -1,5 +1,5 @@
 
-# Created by https://www.gitignore.io/api/c++,opencv,scons,intellij+iml
+# Created by https://www.gitignore.io/api/c++,intellij,intellij+iml,scons,cmake,opencv,sublimetext
 
 ### C++ ###
 # Prerequisites
@@ -36,25 +36,7 @@
 *.app
 
 
-### OpenCV ###
-#OpenCV for Mac and Linux
-#build and release folders
-*/CMakeFiles
-*/CMakeCache.txt
-*/Makefile
-*/cmake_install.cmake
-.DS_Store
-
-
-### SCons ###
-# for projects that use SCons for building: http://http://www.scons.org/
-.sconsign.dblite
-
-build/
-data/
-
-
-### Intellij+iml ###
+### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
@@ -98,6 +80,39 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+### Intellij Patch ###
+# Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
+
+# *.iml
+# modules.xml
+# .idea/misc.xml
+# *.ipr
+
+
+### Intellij+iml ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff:
+
+# Sensitive or high-churn files:
+
+# Gradle:
+
+# Mongo Explorer plugin:
+
+## File-based project format:
+
+## Plugin-specific files:
+
+# IntelliJ
+
+# mpeltonen/sbt-idea plugin
+
+# JIRA plugin
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+
 ### Intellij+iml Patch ###
 # Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-249601023
 
@@ -106,4 +121,69 @@ modules.xml
 .idea/misc.xml
 *.ipr
 
-# End of https://www.gitignore.io/api/c++,opencv,scons,intellij+iml
+
+### SCons ###
+# for projects that use SCons for building: http://http://www.scons.org/
+.sconsign.dblite
+
+
+### CMake ###
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+
+### OpenCV ###
+#OpenCV for Mac and Linux
+#build and release folders
+*/CMakeFiles
+*/CMakeCache.txt
+*/Makefile
+*/cmake_install.cmake
+.DS_Store
+
+
+### SublimeText ###
+# cache files for sublime text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using SublimeText
+# *.sublime-project
+
+# sftp configuration file
+sftp-config.json
+
+# Package control specific files
+Package Control.last-run
+Package Control.ca-list
+Package Control.ca-bundle
+Package Control.system-ca-bundle
+Package Control.cache/
+Package Control.ca-certs/
+Package Control.merged-ca-bundle
+Package Control.user-ca-bundle
+oscrypto-ca-bundle.crt
+bh_unicode_properties.cache
+
+# Sublime-github package stores a github token in this file
+# https://packagecontrol.io/packages/sublime-github
+GitHub.sublime-settings
+
+# End of https://www.gitignore.io/api/c++,intellij,intellij+iml,scons,cmake,opencv,sublimetext
+
+### Own definitions ###
+build/
+data/
+cmake-build-debug/
