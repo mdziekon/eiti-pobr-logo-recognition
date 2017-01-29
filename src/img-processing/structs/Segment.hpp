@@ -36,12 +36,21 @@ namespace pobr::imgProcessing::structs
 
         const std::string classify() const;
         const bool isClassifiedAsLetter() const;
+
+    protected:
+        const double getHuMomentInvariantNo1() const;
+        const double getHuMomentInvariantNo2() const;
+        const double getHuMomentInvariantNo3() const;
+        const double getHuMomentInvariantNo4() const;
+        const double getHuMomentInvariantNo5() const;
+        const double getHuMomentInvariantNo6() const;
+        const double getHuMomentInvariantNo7() const;
+
         const bool isLetterT() const;
         const bool isLetterE() const;
         const bool isLetterS() const;
         const bool isLetterC() const;
         const bool isLetterO() const;
-
     };
 }
 

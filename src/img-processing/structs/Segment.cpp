@@ -170,235 +170,21 @@ const double
 Segment::getHuMomentInvariant(const uint8_t& no)
 const
 {
-    const auto m00 = this->getNormalMoment(0, 0);
-    const auto m01 = this->getNormalMoment(0, 1);
-    const auto m10 = this->getNormalMoment(1, 0);
-
     switch (no) {
     case 1:
-        return (
-            (
-                getCentralMoment(2, 0, m00, m10, m01) +
-                getCentralMoment(0, 2, m00, m10, m01)
-            )
-            /
-            std::pow(m00, 2)
-        );
-        break;
+        return this->getHuMomentInvariantNo1();
     case 2:
-        return (
-            (
-                std::pow(
-                    (
-                        getCentralMoment(2, 0, m00, m10, m01) -
-                        getCentralMoment(0, 2, m00, m10, m01)
-                    ),
-                    2
-                )
-                +
-                (
-                    4 *
-                    std::pow(
-                        getCentralMoment(1, 1, m00, m10, m01),
-                        2
-                    )
-                )
-            )
-            /
-            std::pow(m00, 4)
-        );
-        break;
+        return this->getHuMomentInvariantNo2();
     case 3:
-        return (
-            (
-                std::pow(
-                    (
-                        (1 * getCentralMoment(3, 0, m00, m10, m01)) -
-                        (3 * getCentralMoment(1, 2, m00, m10, m01))
-                    ),
-                    2
-                )
-                +
-                std::pow(
-                    (
-                        (3 * getCentralMoment(2, 1, m00, m10, m01)) -
-                        (1 * getCentralMoment(0, 3, m00, m10, m01))
-                    ),
-                    2
-                )
-            )
-            /
-            std::pow(m00, 5)
-        );
-        break;
+        return this->getHuMomentInvariantNo3();
     case 4:
-        return (
-            (
-                std::pow(
-                    (
-                        getCentralMoment(3, 0, m00, m10, m01) +
-                        getCentralMoment(1, 2, m00, m10, m01)
-                    ),
-                    2
-                )
-                +
-                std::pow(
-                    (
-                        getCentralMoment(2, 1, m00, m10, m01) -
-                        getCentralMoment(0, 3, m00, m10, m01)
-                    ),
-                    2
-                )
-            )
-            /
-            std::pow(m00, 5)
-        );
-        break;
+        return this->getHuMomentInvariantNo4();
     case 5:
-        return (
-            (
-                (
-                    (
-                        (1 * getCentralMoment(3, 0, m00, m10, m01)) -
-                        (3 * getCentralMoment(1, 2, m00, m10, m01))
-                    )
-                    *
-                    (
-                        getCentralMoment(3, 0, m00, m10, m01) +
-                        getCentralMoment(1, 2, m00, m10, m01)
-                    )
-                    *
-                    (
-                        (
-                            1 *
-                            std::pow(
-                                (
-                                    getCentralMoment(3, 0, m00, m10, m01) +
-                                    getCentralMoment(1, 2, m00, m10, m01)
-                                ),
-                                2
-                            )
-                        )
-                        -
-                        (
-                            3 *
-                            std::pow(
-                                (
-                                    getCentralMoment(2, 1, m00, m10, m01) +
-                                    getCentralMoment(0, 3, m00, m10, m01)
-                                ),
-                                2
-                            )
-                        )
-                    )
-                )
-                +
-                (
-                    (
-                        (3 * getCentralMoment(2, 1, m00, m10, m01)) -
-                        (1 * getCentralMoment(0, 3, m00, m10, m01))
-                    )
-                    *
-                    (
-                        getCentralMoment(2, 1, m00, m10, m01) +
-                        getCentralMoment(0, 3, m00, m10, m01)
-                    )
-                    *
-                    (
-                        (
-                            3 *
-                            std::pow(
-                                (
-                                    getCentralMoment(3, 0, m00, m10, m01) +
-                                    getCentralMoment(1, 2, m00, m10, m01)
-                                ),
-                                2
-                            )
-                        )
-                        -
-                        (
-                            1 *
-                            std::pow(
-                                (
-                                    getCentralMoment(2, 1, m00, m10, m01) +
-                                    getCentralMoment(0, 3, m00, m10, m01)
-                                ),
-                                2
-                            )
-                        )
-                    )
-                )
-            )
-            /
-            std::pow(m00, 10)
-        );
-        break;
+        return this->getHuMomentInvariantNo5();
     case 6:
-        return (
-            (
-                (
-                    (
-                        getCentralMoment(2, 0, m00, m10, m01) -
-                        getCentralMoment(0, 2, m00, m10, m01)
-                    )
-                    *
-                    (
-                        std::pow(
-                            (
-                                getCentralMoment(3, 0, m00, m10, m01) +
-                                getCentralMoment(1, 2, m00, m10, m01)
-                            ),
-                            2
-                        )
-                        -
-                        std::pow(
-                            (
-                                getCentralMoment(2, 1, m00, m10, m01) +
-                                getCentralMoment(0, 3, m00, m10, m01)
-                            ),
-                            2
-                        )
-                    )
-                )
-                +
-                (
-                    (
-                        4 *
-                        getCentralMoment(1, 1, m00, m10, m01)
-                    )
-                    *
-                    (
-                        getCentralMoment(3, 0, m00, m10, m01) +
-                        getCentralMoment(1, 2, m00, m10, m01)
-                    )
-                    *
-                    (
-                        getCentralMoment(2, 1, m00, m10, m01) +
-                        getCentralMoment(0, 3, m00, m10, m01)
-                    )
-                )
-            )
-            /
-            std::pow(m00, 7)
-        );
-        break;
+        return this->getHuMomentInvariantNo6();
     case 7:
-        return (
-            (
-                (
-                    getCentralMoment(2, 0, m00, m10, m01) *
-                    getCentralMoment(0, 2, m00, m10, m01)
-                )
-                -
-                std::pow(
-                    getCentralMoment(1, 1, m00, m10, m01),
-                    2
-                )
-            )
-            /
-            std::pow(m00, 4)
-        );
-        break;
+        return this->getHuMomentInvariantNo7();
     }
 
     return -1;
@@ -436,6 +222,286 @@ Segment::isClassifiedAsLetter()
 const
 {
     return this->classify().find("LETTER_") != std::string::npos;
+}
+
+const double
+Segment::getHuMomentInvariantNo1()
+const
+{
+    const auto m00 = this->getNormalMoment(0, 0);
+    const auto m01 = this->getNormalMoment(0, 1);
+    const auto m10 = this->getNormalMoment(1, 0);
+
+    return (
+        (
+            getCentralMoment(2, 0, m00, m10, m01) +
+            getCentralMoment(0, 2, m00, m10, m01)
+        )
+        /
+        std::pow(m00, 2)
+    );
+}
+
+const double
+Segment::getHuMomentInvariantNo2()
+const
+{
+    const auto m00 = this->getNormalMoment(0, 0);
+    const auto m01 = this->getNormalMoment(0, 1);
+    const auto m10 = this->getNormalMoment(1, 0);
+
+    return (
+        (
+            std::pow(
+                (
+                    getCentralMoment(2, 0, m00, m10, m01) -
+                    getCentralMoment(0, 2, m00, m10, m01)
+                ),
+                2
+            )
+            +
+            (
+                4 *
+                std::pow(
+                    getCentralMoment(1, 1, m00, m10, m01),
+                    2
+                )
+            )
+        )
+        /
+        std::pow(m00, 4)
+    );
+}
+
+const double
+Segment::getHuMomentInvariantNo3()
+const
+{
+    const auto m00 = this->getNormalMoment(0, 0);
+    const auto m01 = this->getNormalMoment(0, 1);
+    const auto m10 = this->getNormalMoment(1, 0);
+
+    return (
+        (
+            std::pow(
+                (
+                    (1 * this->getCentralMoment(3, 0, m00, m10, m01)) -
+                    (3 * this->getCentralMoment(1, 2, m00, m10, m01))
+                ),
+                2
+            )
+            +
+            std::pow(
+                (
+                    (3 * this->getCentralMoment(2, 1, m00, m10, m01)) -
+                    (1 * this->getCentralMoment(0, 3, m00, m10, m01))
+                ),
+                2
+            )
+        )
+        /
+        std::pow(m00, 5)
+    );
+}
+
+const double
+Segment::getHuMomentInvariantNo4()
+const
+{
+    const auto m00 = this->getNormalMoment(0, 0);
+    const auto m01 = this->getNormalMoment(0, 1);
+    const auto m10 = this->getNormalMoment(1, 0);
+
+    return (
+        (
+            std::pow(
+                (
+                    this->getCentralMoment(3, 0, m00, m10, m01) +
+                    this->getCentralMoment(1, 2, m00, m10, m01)
+                ),
+                2
+            )
+            +
+            std::pow(
+                (
+                    this->getCentralMoment(2, 1, m00, m10, m01) -
+                    this->getCentralMoment(0, 3, m00, m10, m01)
+                ),
+                2
+            )
+        )
+        /
+        std::pow(m00, 5)
+    );
+}
+
+const double
+Segment::getHuMomentInvariantNo5()
+const
+{
+    const auto m00 = this->getNormalMoment(0, 0);
+    const auto m01 = this->getNormalMoment(0, 1);
+    const auto m10 = this->getNormalMoment(1, 0);
+
+    return (
+        (
+            (
+                (
+                    (1 * this->getCentralMoment(3, 0, m00, m10, m01)) -
+                    (3 * this->getCentralMoment(1, 2, m00, m10, m01))
+                )
+                *
+                (
+                    this->getCentralMoment(3, 0, m00, m10, m01) +
+                    this->getCentralMoment(1, 2, m00, m10, m01)
+                )
+                *
+                (
+                    (
+                        1 *
+                        std::pow(
+                            (
+                                this->getCentralMoment(3, 0, m00, m10, m01) +
+                                this->getCentralMoment(1, 2, m00, m10, m01)
+                            ),
+                            2
+                        )
+                    )
+                    -
+                    (
+                        3 *
+                        std::pow(
+                            (
+                                this->getCentralMoment(2, 1, m00, m10, m01) +
+                                this->getCentralMoment(0, 3, m00, m10, m01)
+                            ),
+                            2
+                        )
+                    )
+                )
+            )
+            +
+            (
+                (
+                    (3 * this->getCentralMoment(2, 1, m00, m10, m01)) -
+                    (1 * this->getCentralMoment(0, 3, m00, m10, m01))
+                )
+                *
+                (
+                    this->getCentralMoment(2, 1, m00, m10, m01) +
+                    this->getCentralMoment(0, 3, m00, m10, m01)
+                )
+                *
+                (
+                    (
+                        3 *
+                        std::pow(
+                            (
+                                this->getCentralMoment(3, 0, m00, m10, m01) +
+                                this->getCentralMoment(1, 2, m00, m10, m01)
+                            ),
+                            2
+                        )
+                    )
+                    -
+                    (
+                        1 *
+                        std::pow(
+                            (
+                                this->getCentralMoment(2, 1, m00, m10, m01) +
+                                this->getCentralMoment(0, 3, m00, m10, m01)
+                            ),
+                            2
+                        )
+                    )
+                )
+            )
+        )
+        /
+        std::pow(m00, 10)
+    );
+}
+
+const double
+Segment::getHuMomentInvariantNo6()
+const
+{
+    const auto m00 = this->getNormalMoment(0, 0);
+    const auto m01 = this->getNormalMoment(0, 1);
+    const auto m10 = this->getNormalMoment(1, 0);
+
+    return (
+        (
+            (
+                (
+                    this->getCentralMoment(2, 0, m00, m10, m01) -
+                    this->getCentralMoment(0, 2, m00, m10, m01)
+                )
+                *
+                (
+                    std::pow(
+                        (
+                            this->getCentralMoment(3, 0, m00, m10, m01) +
+                            this->getCentralMoment(1, 2, m00, m10, m01)
+                        ),
+                        2
+                    )
+                    -
+                    std::pow(
+                        (
+                            this->getCentralMoment(2, 1, m00, m10, m01) +
+                            this->getCentralMoment(0, 3, m00, m10, m01)
+                        ),
+                        2
+                    )
+                )
+            )
+            +
+            (
+                (
+                    4 *
+                    this->getCentralMoment(1, 1, m00, m10, m01)
+                )
+                *
+                (
+                    this->getCentralMoment(3, 0, m00, m10, m01) +
+                    this->getCentralMoment(1, 2, m00, m10, m01)
+                )
+                *
+                (
+                    this->getCentralMoment(2, 1, m00, m10, m01) +
+                    this->getCentralMoment(0, 3, m00, m10, m01)
+                )
+            )
+        )
+        /
+        std::pow(m00, 7)
+    );
+}
+
+const double
+Segment::getHuMomentInvariantNo7()
+const
+{
+    const auto m00 = this->getNormalMoment(0, 0);
+    const auto m01 = this->getNormalMoment(0, 1);
+    const auto m10 = this->getNormalMoment(1, 0);
+
+    return (
+        (
+            (
+                this->getCentralMoment(2, 0, m00, m10, m01) *
+                this->getCentralMoment(0, 2, m00, m10, m01)
+            )
+            -
+            std::pow(
+                this->getCentralMoment(1, 1, m00, m10, m01),
+                2
+            )
+        )
+        /
+        std::pow(m00, 4)
+    );
 }
 
 const bool
