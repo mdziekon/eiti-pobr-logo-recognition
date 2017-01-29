@@ -21,8 +21,6 @@ namespace segmentation = pobr::imgProcessing::utils::segmentation;
 
 using ErrorHandler = pobr::utils::ErrorHandler;
 using PerformanceTimer = pobr::utils::PerformanceTimer;
-using Segment = pobr::imgProcessing::structs::Segment;
-using Candidate = pobr::imgProcessing::structs::Candidate;
 using ImgProcessor = pobr::imgProcessing::ImgProcessor;
 
 const bool
@@ -324,7 +322,7 @@ const
 cv::Mat
 ImgProcessor::drawSegmentsBBoxes(
     const cv::Mat& img,
-    const std::vector<pobr::imgProcessing::structs::Segment>& segments,
+    const std::vector<structs::Segment>& segments,
     const cv::Vec3b& borderColor
 )
 const
