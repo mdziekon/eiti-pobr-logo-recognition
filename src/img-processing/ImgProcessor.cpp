@@ -3,7 +3,7 @@
 #include <opencv2/highgui/highgui.hpp>
 
 #include "../utils/consts.hpp"
-#include "../utils/error-handler/ErrorHandler.hpp"
+#include "../utils/logger/Logger.hpp"
 #include "../utils/performance-timer/PerformanceTimer.hpp"
 #include "./utils/converters.hpp"
 #include "./utils/matrix-ops.hpp"
@@ -20,7 +20,7 @@ namespace enhance = pobr::imgProcessing::utils::enhance;
 namespace segmentation = pobr::imgProcessing::utils::segmentation;
 namespace detection = pobr::imgProcessing::utils::detection;
 
-using ErrorHandler = pobr::utils::ErrorHandler;
+using Logger = pobr::utils::Logger;
 using PerformanceTimer = pobr::utils::PerformanceTimer;
 using ImgProcessor = pobr::imgProcessing::ImgProcessor;
 
@@ -39,7 +39,7 @@ const
         return;
     }
 
-    ErrorHandler::error("ImgProcessor has no image loaded yet!");
+    Logger::error("ImgProcessor has no image loaded yet!");
 }
 
 const void
@@ -48,7 +48,7 @@ ImgProcessor::loadImg(const std::string& imgPath)
     this->img = cv::imread(imgPath);
 
     if (this->img.empty()) {
-        ErrorHandler::warning("Could not properly load image \"" + imgPath + "\"...");
+        Logger::warning("Could not properly load image \"" + imgPath + "\"...");
     }
 }
 
@@ -94,7 +94,7 @@ const
 
     profiler.stop();
 
-    ErrorHandler::notice(
+    Logger::notice(
         std::string("PreEnhance phase took: ") +
         std::to_string(profiler.getDurationNS() / 1000000) +
         std::string("ms")
@@ -122,7 +122,7 @@ const
 
     profiler.stop();
 
-    ErrorHandler::notice(
+    Logger::notice(
         std::string("Binarize phase took: ") +
         std::to_string(profiler.getDurationNS() / 1000000) +
         std::string("ms")
@@ -153,7 +153,7 @@ const
 
     profiler.stop();
 
-    ErrorHandler::notice(
+    Logger::notice(
         std::string("BinaryEnhance phase took: ") +
         std::to_string(profiler.getDurationNS() / 1000000) +
         std::string("ms")
@@ -176,7 +176,7 @@ const
 
     profiler.stop();
 
-    ErrorHandler::notice(
+    Logger::notice(
         std::string("Segmentation phase took: ") +
         std::to_string(profiler.getDurationNS() / 1000000) +
         std::string("ms")
@@ -200,7 +200,7 @@ const
     std::vector<structs::Candidate> matchingCandidates;
 
     for (auto& candidate: candidates) {
-        // ErrorHandler::notice(cand.segment.classify());
+        // Logger::notice(cand.segment.classify());
 
         if (!candidate.segment.isClassifiedAsLetter()) {
             continue;
@@ -208,24 +208,24 @@ const
 
         matchingCandidates.push_back(candidate);
 
-        // ErrorHandler::notice("-------");
-        // ErrorHandler::notice("segment " + std::to_string(cand.segment.xMin) + "x" + std::to_string(cand.segment.yMin));
-        // ErrorHandler::notice("hu 1 = " + std::to_string(cand.segment.getHuMomentInvariant(1)));
-        // ErrorHandler::notice("hu 2 = " + std::to_string(cand.segment.getHuMomentInvariant(2)));
-        // ErrorHandler::notice("hu 3 = " + std::to_string(cand.segment.getHuMomentInvariant(3)));
-        // ErrorHandler::notice("hu 4 = " + std::to_string(cand.segment.getHuMomentInvariant(4)));
-        // ErrorHandler::notice("hu 5 = " + std::to_string(cand.segment.getHuMomentInvariant(5)));
-        // ErrorHandler::notice("hu 6 = " + std::to_string(cand.segment.getHuMomentInvariant(6)));
-        // ErrorHandler::notice("hu 7 = " + std::to_string(cand.segment.getHuMomentInvariant(7)));
+        // Logger::notice("-------");
+        // Logger::notice("segment " + std::to_string(cand.segment.xMin) + "x" + std::to_string(cand.segment.yMin));
+        // Logger::notice("hu 1 = " + std::to_string(cand.segment.getHuMomentInvariant(1)));
+        // Logger::notice("hu 2 = " + std::to_string(cand.segment.getHuMomentInvariant(2)));
+        // Logger::notice("hu 3 = " + std::to_string(cand.segment.getHuMomentInvariant(3)));
+        // Logger::notice("hu 4 = " + std::to_string(cand.segment.getHuMomentInvariant(4)));
+        // Logger::notice("hu 5 = " + std::to_string(cand.segment.getHuMomentInvariant(5)));
+        // Logger::notice("hu 6 = " + std::to_string(cand.segment.getHuMomentInvariant(6)));
+        // Logger::notice("hu 7 = " + std::to_string(cand.segment.getHuMomentInvariant(7)));
 
-        // ErrorHandler::notice("-------");
-        // ErrorHandler::notice("segment " + std::to_string(cand.segment.xMin) + "x" + std::to_string(cand.segment.yMin));
-        // ErrorHandler::notice("classification = " + cand.segment.classify());
+        // Logger::notice("-------");
+        // Logger::notice("segment " + std::to_string(cand.segment.xMin) + "x" + std::to_string(cand.segment.yMin));
+        // Logger::notice("classification = " + cand.segment.classify());
     }
 
     profiler.stop();
 
-    ErrorHandler::notice(
+    Logger::notice(
         std::string("FilterCandidates phase took: ") +
         std::to_string(profiler.getDurationNS() / 1000000) +
         std::string("ms")
@@ -250,7 +250,7 @@ const
 
     profiler.stop();
 
-    ErrorHandler::notice(
+    Logger::notice(
         std::string("Detection phase took: ") +
         std::to_string(profiler.getDurationNS() / 1000000) +
         std::string("ms")

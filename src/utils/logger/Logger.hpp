@@ -1,5 +1,5 @@
-#ifndef POBR_UTILS_ERRORHANDLER_HPP
-#define POBR_UTILS_ERRORHANDLER_HPP
+#ifndef POBR_UTILS_LOGGER_HPP
+#define POBR_UTILS_LOGGER_HPP
 
 #ifndef POBR_CONFIG_SILENTERRORS
 #define POBR_CONFIG_SILENTERRORS false
@@ -13,12 +13,12 @@
 
 namespace pobr::utils
 {
-    class ErrorHandler: public TerminalPrinter
+    class Logger: public TerminalPrinter
     {
     public:
         class Exception: public std::exception
         {
-            friend class ErrorHandler;
+            friend class Logger;
 
         public:
             virtual const char* what() const noexcept;

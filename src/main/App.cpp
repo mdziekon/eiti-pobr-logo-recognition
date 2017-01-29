@@ -2,10 +2,10 @@
 
 #include <opencv2/highgui/highgui.hpp>
 
-#include "../utils/error-handler/ErrorHandler.hpp"
+#include "../utils/logger/Logger.hpp"
 #include "../img-processing/ImgProcessor.hpp"
 
-using ErrorHandler = pobr::utils::ErrorHandler;
+using Logger = pobr::utils::Logger;
 using ImgProcessor = pobr::imgProcessing::ImgProcessor;
 
 using App = pobr::main::App;
@@ -16,7 +16,7 @@ App::App(const std::vector<std::string>& arguments)
     {
         if (arguments.size() < 1)
         {
-            ErrorHandler::error("No input file specified");
+            Logger::error("No input file specified");
         }
 
         auto imgProcessor = ImgProcessor();
@@ -31,8 +31,8 @@ App::App(const std::vector<std::string>& arguments)
         cv::waitKey(-1);
 
     }
-    catch(ErrorHandler::Exception &e)
+    catch(Logger::Exception &e)
     {
-        ErrorHandler::error("Terminating...", true);
+        Logger::error("Terminating...", true);
     }
 }

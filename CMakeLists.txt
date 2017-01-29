@@ -16,8 +16,8 @@ set(SOURCE_FILES
         src/img-processing/ImgProcessor.hpp
         src/main/App.cpp
         src/main/App.hpp
-        src/utils/error-handler/ErrorHandler.cpp
-        src/utils/error-handler/ErrorHandler.hpp
+        src/utils/logger/Logger.cpp
+        src/utils/logger/Logger.hpp
         src/utils/performance-timer/PerformanceTimer.cpp
         src/utils/performance-timer/PerformanceTimer.hpp
         src/utils/terminal-printer/TerminalPrinter.cpp
