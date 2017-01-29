@@ -67,7 +67,7 @@ const
     img = this->processBinaryEnhance(img);
 
     auto segments = this->processSegmentation(img);
-    auto candidates = this->processFilterCandidates(img, segments);
+    auto candidates = this->processFilterCandidates(segments);
     auto letterSegments = this->processDetection(candidates);
 
     img = this->drawSegmentsBBoxes(img, letterSegments);
@@ -183,14 +183,16 @@ const
 }
 
 std::vector<structs::Candidate>
-ImgProcessor::processFilterCandidates(const cv::Mat& img, const std::vector<structs::Segment>& segments)
+ImgProcessor::processFilterCandidates(
+    const std::vector<structs::Segment>& segments
+)
 const
 {
     PerformanceTimer profiler;
 
     profiler.start();
 
-    auto candidates = this->findImageLogoCandidates(img, segments);
+    auto candidates = this->findImageLogoCandidates(segments);
 
     std::vector<structs::Candidate> matchingCandidates;
 
@@ -541,7 +543,6 @@ const
 
 std::vector<structs::Candidate>
 ImgProcessor::findImageLogoCandidates(
-    const cv::Mat& img,
     const std::vector<structs::Segment>& segments
 )
 const

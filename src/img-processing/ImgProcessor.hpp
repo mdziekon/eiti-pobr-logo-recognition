@@ -23,7 +23,7 @@ namespace pobr::imgProcessing
         std::vector<structs::Segment> getImageSegmentsScanMerge(const cv::Mat& img, const bool& useDiagonalDetection = true) const;
         std::vector<structs::Segment> getImageSegmentsFloodFill(const cv::Mat& img) const;
 
-        std::vector<structs::Candidate> findImageLogoCandidates(const cv::Mat& img, const std::vector<structs::Segment>& segments) const;
+        std::vector<structs::Candidate> findImageLogoCandidates(const std::vector<structs::Segment>& segments) const;
 
         cv::Mat drawSegmentsBBoxes(
             const cv::Mat& img,
@@ -41,7 +41,7 @@ namespace pobr::imgProcessing
         cv::Mat processBinarize(const cv::Mat& img) const;
         cv::Mat processBinaryEnhance(const cv::Mat& img) const;
         std::vector<structs::Segment> processSegmentation(const cv::Mat& img) const;
-        std::vector<structs::Candidate> processFilterCandidates(const cv::Mat& img, const std::vector<structs::Segment>& segments) const;
+        std::vector<structs::Candidate> processFilterCandidates(const std::vector<structs::Segment>& segments) const;
         std::vector<structs::Segment> processDetection(const std::vector<structs::Candidate>& candidates) const;
     };
 }
