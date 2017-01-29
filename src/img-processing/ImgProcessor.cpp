@@ -574,7 +574,7 @@ const
         kernelValues
     );
 
-    std::array<double, 3> accumulatorInit = { 0.0, 0.0, 0.0 };
+    std::array<double, 3> accumulatorInit = { { 0.0, 0.0, 0.0 } };
 
     resultImg = this->applyKernel<cv::Vec3b, std::array<double, 3>, double>(
         resultImg,
