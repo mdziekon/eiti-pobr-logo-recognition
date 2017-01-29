@@ -20,9 +20,6 @@ namespace pobr::imgProcessing
 
         cv::Mat detectEdges(const cv::Mat& img) const;
 
-        std::vector<structs::Segment> getImageSegmentsScanMerge(const cv::Mat& img, const bool& useDiagonalDetection = true) const;
-        std::vector<structs::Segment> getImageSegmentsFloodFill(const cv::Mat& img) const;
-
         std::vector<structs::Candidate> findImageLogoCandidates(const std::vector<structs::Segment>& segments) const;
 
         cv::Mat drawSegmentsBBoxes(
