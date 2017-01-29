@@ -11,6 +11,7 @@
 #include "./utils/binarization.hpp"
 #include "./utils/enhance.hpp"
 #include "./utils/segmentation.hpp"
+#include "./utils/detection.hpp"
 
 namespace consts = pobr::utils::consts;
 namespace converters = pobr::imgProcessing::utils::converters;
@@ -18,6 +19,7 @@ namespace matrixOps = pobr::imgProcessing::utils::matrixOps;
 namespace binarization = pobr::imgProcessing::utils::binarization;
 namespace enhance = pobr::imgProcessing::utils::enhance;
 namespace segmentation = pobr::imgProcessing::utils::segmentation;
+namespace detection = pobr::imgProcessing::utils::detection;
 
 using ErrorHandler = pobr::utils::ErrorHandler;
 using PerformanceTimer = pobr::utils::PerformanceTimer;
@@ -189,7 +191,7 @@ const
 
     profiler.start();
 
-    auto candidates = this->findImageLogoCandidates(segments);
+    auto candidates = detection::findImageLogoCandidates(segments);
 
     std::vector<structs::Candidate> matchingCandidates;
 
@@ -251,27 +253,6 @@ const
     );
 
     return segments;
-}
-
-std::vector<structs::Candidate>
-ImgProcessor::findImageLogoCandidates(
-    const std::vector<structs::Segment>& segments
-)
-const
-{
-    std::vector<structs::Candidate> candidates;
-
-    for (const auto& segment: segments) {
-        if (segment.getArea() < 225) {
-            continue;
-        }
-
-        auto candidate = structs::Candidate(segment, 0);
-
-        candidates.push_back(candidate);
-    }
-
-    return candidates;
 }
 
 cv::Mat

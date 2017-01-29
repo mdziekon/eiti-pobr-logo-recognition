@@ -18,8 +18,6 @@ namespace pobr::imgProcessing
         const void loadImg(const std::string& imgPath);
         const void process() const;
 
-        std::vector<structs::Candidate> findImageLogoCandidates(const std::vector<structs::Segment>& segments) const;
-
         cv::Mat drawSegmentsBBoxes(
             const cv::Mat& img,
             const std::vector<structs::Segment>& segments,
