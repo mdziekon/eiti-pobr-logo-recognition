@@ -243,14 +243,14 @@ const
     // TODO: Make sure this is in proper order
     profilerShapeEnhancements.start();
 
-    img = this->erodeImage(
-        img,
-        3
-    );
-    img = this->dilateImage(
-        img,
-        3
-    );
+    // img = this->erodeImage(
+    //     img,
+    //     3
+    // );
+    // img = this->dilateImage(
+    //     img,
+    //     3
+    // );
 
     profilerShapeEnhancements.stop();
 
