@@ -403,3 +403,182 @@ const
 
     return -1;
 }
+
+const std::string
+Segment::classify()
+const
+{
+    if (this->getArea() < 100) {
+        return "ERROR_TOOSMALL";
+    }
+
+    if (this->isLetterT()) {
+        return "LETTER_T";
+    }
+    if (this->isLetterE()) {
+        return "LETTER_E";
+    }
+    if (this->isLetterS()) {
+        return "LETTER_S";
+    }
+    if (this->isLetterC()) {
+        return "LETTER_C";
+    }
+    if (this->isLetterO()) {
+        return "LETTER_O";
+    }
+
+    return "ERROR_UNKNOWN";
+}
+
+const bool
+Segment::isClassifiedAsLetter()
+const
+{
+    return this->classify().find("LETTER_") != std::string::npos;
+}
+
+const bool
+Segment::isLetterT()
+const
+{
+    const auto hu1 = this->getHuMomentInvariant(1);
+    const auto hu2 = this->getHuMomentInvariant(2);
+    const auto hu3 = this->getHuMomentInvariant(3);
+    const auto hu4 = this->getHuMomentInvariant(4);
+    const auto hu7 = this->getHuMomentInvariant(7);
+
+    if (hu1 < 0.311719 * 0.75 || hu1 > 0.436134 * 1.25) {
+        return false;
+    }
+    if (hu2 < 0.002169 * 0.75 || hu2 > 0.068402 * 1.25) {
+        return false;
+    }
+    if (hu3 < 0.026323 * 0.75 || hu3 > 0.075005 * 1.25) {
+        return false;
+    }
+    if (hu4 < 0.000072 * 0.75 || hu4 > 0.005648 * 1.25) {
+        return false;
+    }
+    if (hu7 < 0.023207 * 0.75 || hu7 > 0.036627 * 1.25) {
+        return false;
+    }
+
+    return true;
+}
+
+const bool
+Segment::isLetterE()
+const
+{
+    const auto hu1 = this->getHuMomentInvariant(1);
+    const auto hu2 = this->getHuMomentInvariant(2);
+    const auto hu3 = this->getHuMomentInvariant(3);
+    const auto hu4 = this->getHuMomentInvariant(4);
+    const auto hu7 = this->getHuMomentInvariant(7);
+
+    if (hu1 < 0.28205 * 0.75 || hu1 > 0.414592 * 1.25) {
+        return false;
+    }
+    if (hu2 < 0.003996 * 0.75 || hu2 > 0.074936 * 1.25) {
+        return false;
+    }
+    if (hu3 < 0.000485 * 0.75 || hu3 > 0.004407 * 1.25) {
+        return false;
+    }
+    if (hu4 < 0.000013 * 0.75 || hu4 > 0.000442 * 1.25) {
+        return false;
+    }
+    if (hu7 < 0.018604 * 0.75 || hu7 > 0.025658 * 1.25) {
+        return false;
+    }
+
+    return true;
+}
+
+const bool
+Segment::isLetterS()
+const
+{
+    const auto hu1 = this->getHuMomentInvariant(1);
+    const auto hu2 = this->getHuMomentInvariant(2);
+    const auto hu3 = this->getHuMomentInvariant(3);
+    const auto hu4 = this->getHuMomentInvariant(4);
+    const auto hu7 = this->getHuMomentInvariant(7);
+
+    if (hu1 < 0.280296 * 0.75 || hu1 > 0.362073 * 1.25) {
+        return false;
+    }
+    if (hu2 < 0.001189 * 0.75 || hu2 > 0.036808 * 1.25) {
+        return false;
+    }
+    if (hu3 < 0.000033 * 0.75 || hu3 > 0.000296 * 1.25) {
+        return false;
+    }
+    if (hu4 < 0.000002 * 0.75 || hu4 > 0.000033 * 1.25) {
+        return false;
+    }
+    if (hu7 < 0.018977 * 0.75 || hu7 > 0.029561 * 1.25) {
+        return false;
+    }
+
+    return true;
+}
+
+const bool
+Segment::isLetterC()
+const
+{
+    const auto hu1 = this->getHuMomentInvariant(1);
+    const auto hu2 = this->getHuMomentInvariant(2);
+    const auto hu3 = this->getHuMomentInvariant(3);
+    const auto hu4 = this->getHuMomentInvariant(4);
+    const auto hu7 = this->getHuMomentInvariant(7);
+
+    if (hu1 < 0.352379 * 0.75 || hu1 > 0.47044 * 1.25) {
+        return false;
+    }
+    if (hu2 < 0.000268 * 0.75 || hu2 > 0.066352 * 1.25) {
+        return false;
+    }
+    if (hu3 < 0.005753 * 0.75 || hu3 > 0.027387 * 1.25) {
+        return false;
+    }
+    if (hu4 < 0.000054 * 0.75 || hu4 > 0.005462 * 1.25) {
+        return false;
+    }
+    if (hu7 < 0.030236 * 0.75 || hu7 > 0.048242 * 1.25) {
+        return false;
+    }
+
+    return true;
+}
+
+const bool
+Segment::isLetterO()
+const
+{
+    const auto hu1 = this->getHuMomentInvariant(1);
+    const auto hu2 = this->getHuMomentInvariant(2);
+    const auto hu3 = this->getHuMomentInvariant(3);
+    const auto hu4 = this->getHuMomentInvariant(4);
+    const auto hu7 = this->getHuMomentInvariant(7);
+
+    if (hu1 < 0.324674 * 0.75 || hu1 > 0.39543 * 1.25) {
+        return false;
+    }
+    if (hu2 < 0.000849 * 0.75 || hu2 > 0.013153 * 1.25) {
+        return false;
+    }
+    if (hu3 < 0.000003 * 0.75 || hu3 > 0.000035 * 1.25) {
+        return false;
+    }
+    if (hu4 < 0.000001 * 0.75 || hu4 > 0.000005 * 1.25) {
+        return false;
+    }
+    if (hu7 < 0.024815 * 0.75 || hu7 > 0.037956 * 1.25) {
+        return false;
+    }
+
+    return true;
+}

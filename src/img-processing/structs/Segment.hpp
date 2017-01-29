@@ -2,6 +2,7 @@
 #define POBR_IMGPROCESSING_STRUCTS_SEGMENT_HPP
 
 #include <cstdint>
+#include <string>
 #include <vector>
 #include <opencv2/core/core.hpp>
 
@@ -32,6 +33,15 @@ namespace pobr::imgProcessing::structs
         const double getNormalMoment(const uint64_t& p, const uint64_t& q) const;
         const double getCentralMoment(const uint64_t& p, const uint64_t& q, const double& m00, const double& m10, const double& m01) const;
         const double getHuMomentInvariant(const uint8_t& no) const;
+
+        const std::string classify() const;
+        const bool isClassifiedAsLetter() const;
+        const bool isLetterT() const;
+        const bool isLetterE() const;
+        const bool isLetterS() const;
+        const bool isLetterC() const;
+        const bool isLetterO() const;
+
     };
 }
 
