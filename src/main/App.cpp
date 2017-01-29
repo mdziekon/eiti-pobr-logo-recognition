@@ -1,5 +1,7 @@
 #include "App.hpp"
 
+#include <opencv2/highgui/highgui.hpp>
+
 #include "../utils/error-handler/ErrorHandler.hpp"
 #include "../img-processing/ImgProcessor.hpp"
 
@@ -20,7 +22,13 @@ App::App(const std::vector<std::string>& arguments)
         auto imgProcessor = ImgProcessor();
 
         imgProcessor.loadImg(arguments.at(0));
-        imgProcessor.process();
+
+        auto letterSegments = imgProcessor.process();
+        auto img = imgProcessor.drawSegmentsBBoxes(imgProcessor.getImg(), letterSegments);
+
+        cv::imshow(arguments.at(0), img);
+
+        cv::waitKey(-1);
 
     }
     catch(ErrorHandler::Exception &e)

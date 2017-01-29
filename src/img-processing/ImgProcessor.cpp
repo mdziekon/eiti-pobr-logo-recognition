@@ -1,6 +1,5 @@
 #include "ImgProcessor.hpp"
 
-#include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
 #include "../utils/consts.hpp"
@@ -53,7 +52,16 @@ ImgProcessor::loadImg(const std::string& imgPath)
     }
 }
 
-const void
+const cv::Mat&
+ImgProcessor::getImg()
+const
+{
+    this->assertIsReady();
+
+    return this->img;
+}
+
+const std::vector<structs::Segment>
 ImgProcessor::process()
 const
 {
@@ -69,11 +77,7 @@ const
     auto candidates = this->processFilterCandidates(segments);
     auto letterSegments = this->processDetection(candidates);
 
-    img = this->drawSegmentsBBoxes(img, letterSegments);
-
-    cv::imshow("test", img);
-
-    cv::waitKey(-1);
+    return letterSegments;
 }
 
 cv::Mat
