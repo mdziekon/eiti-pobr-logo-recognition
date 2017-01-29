@@ -2,8 +2,6 @@
 #define POBR_IMGPROCESSING_UTILS_MATRIXOPS_HPP
 
 #include <cstdint>
-#include <string>
-#include <vector>
 #include <functional>
 #include <opencv2/core/core.hpp>
 

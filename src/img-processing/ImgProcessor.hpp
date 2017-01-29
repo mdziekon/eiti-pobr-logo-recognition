@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include <functional>
 #include <opencv2/core/core.hpp>
 
 #include "./structs/Segment.hpp"
