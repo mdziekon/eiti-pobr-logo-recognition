@@ -13,6 +13,10 @@ namespace pobr::imgProcessing::utils::detection
     std::vector<structs::Candidate> findImageLogoCandidates(
         const std::vector<structs::Segment>& segments
     );
+
+    std::vector<structs::Segment> groupLetters(
+        const std::vector<structs::Segment>& segments
+    );
 }
 
 #endif

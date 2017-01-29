@@ -248,6 +248,8 @@ const
         segments.push_back(candidate.segment);
     }
 
+    segments = detection::groupLetters(segments);
+
     profiler.stop();
 
     Logger::notice(
