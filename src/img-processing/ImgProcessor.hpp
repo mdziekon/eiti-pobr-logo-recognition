@@ -45,27 +45,6 @@ namespace pobr::imgProcessing
         const bool isReady() const;
         const void assertIsReady() const;
 
-        const cv::Mat& forEachPixel(
-            const cv::Mat& img,
-            const std::function<void(const uint64_t& x, const uint64_t& y)>& operation
-        ) const;
-
-        template<class Acc>
-        Acc reduceEachPixel(
-            const cv::Mat& img,
-            Acc accumulator,
-            const std::function<Acc(const uint64_t& x, const uint64_t& y, Acc& accumulator)>& operation
-        ) const;
-
-        template<class PixelClass, class Acc, class KernelValue>
-        cv::Mat applyKernel(
-            const cv::Mat& img,
-            const cv::Mat& kernel,
-            Acc accumulatorInit,
-            const std::function<Acc(const uint64_t& x, const uint64_t& y, Acc& accumulator, const PixelClass& pixel, const KernelValue& kernelValue)>& reducer,
-            const std::function<void(const uint64_t& x, const uint64_t& y, Acc& accumulator, PixelClass& pixel, const cv::Mat& img)>& applicator
-        ) const;
-
         cv::Vec3d rgb2HSV(const cv::Vec3b opencvRGB) const;
     };
 }
