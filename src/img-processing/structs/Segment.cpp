@@ -4,6 +4,18 @@
 
 using Segment = pobr::imgProcessing::structs::Segment;
 
+const double
+Segment::getDistance(const Segment& left, const Segment& right)
+{
+    const auto leftCenterPos = left.getGlobalCenter();
+    const auto rightCenterPos = right.getGlobalCenter();
+
+    return std::sqrt(
+        std::pow(leftCenterPos.first - rightCenterPos.first, 2) +
+        std::pow(leftCenterPos.second - rightCenterPos.second, 2)
+    );
+}
+
 const void
 Segment::updateBoundaries(const uint64_t& x, const uint64_t& y)
 {
@@ -49,6 +61,57 @@ Segment::merge(const Segment& other)
 {
     this->updateBoundaries(other.xMin, other.yMin);
     this->updateBoundaries(other.xMax, other.yMax);
+}
+
+const bool
+Segment::isValid()
+const
+{
+    return !(this->xMin == 0 && this->xMax == 0);
+}
+
+
+const uint64_t
+Segment::getWidth()
+const
+{
+    return this->xMax - this->xMin + 1;
+}
+
+const uint64_t
+Segment::getHeight()
+const
+{
+    return this->yMax - this->yMin + 1;
+}
+
+const std::pair<double, double>
+Segment::getLocalCenter()
+const
+{
+    const double xMiddle = ((double) this->getWidth()) / 2;
+    const double yMiddle = ((double) this->getHeight()) / 2;
+
+    return { xMiddle, yMiddle };
+}
+
+const std::pair<double, double>
+Segment::getGlobalCenter()
+const
+{
+    const auto localCenter = this->getLocalCenter();
+
+    return {
+        localCenter.first + this->xMin,
+        localCenter.second + this->yMin
+    };
+}
+
+const uint64_t
+Segment::getBBoxArea()
+const
+{
+    return (this->getWidth() * this->getHeight());
 }
 
 const uint64_t

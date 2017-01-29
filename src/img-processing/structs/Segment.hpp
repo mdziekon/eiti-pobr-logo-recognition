@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <utility>
 #include <opencv2/core/core.hpp>
 
 #include "../../utils/consts.hpp"
@@ -15,6 +16,8 @@ namespace pobr::imgProcessing::structs
     struct Segment
     {
     public:
+        static const double getDistance(const Segment& left, const Segment& right);
+
         uint64_t xMin = 0;
         uint64_t xMax = 0;
         uint64_t yMin = 0;
@@ -27,6 +30,12 @@ namespace pobr::imgProcessing::structs
 
         const void merge(const Segment& other);
 
+        const bool isValid() const;
+        const uint64_t getWidth() const;
+        const uint64_t getHeight() const;
+        const std::pair<double, double> getLocalCenter() const;
+        const std::pair<double, double> getGlobalCenter() const;
+        const uint64_t getBBoxArea() const;
         const uint64_t getArea() const;
         const uint64_t getCircumference() const;
         const double getW3() const; // Malinowska
