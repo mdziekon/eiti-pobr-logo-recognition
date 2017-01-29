@@ -120,92 +120,198 @@ const
 
     auto img = this->img;
 
-    // img = this->unsharpMasking(img);
-    PerformanceTimer profilerBinarization;
-    PerformanceTimer profilerShapeEnhancements;
-    PerformanceTimer profilerSegmentation;
+    img = this->processPreEnhance(img);
+    img = this->processBinarize(img);
+    img = this->processBinaryEnhance(img);
 
-    // --- Binarization
-    profilerBinarization.start();
+    auto segments = this->processSegmentation(img);
+    auto candidates = this->processFilterCandidates(img, segments);
+    auto letterSegments = this->processDetection(candidates);
 
-    img = this->binarizeImage(
-        img,
-        cv::Vec3b(0, 0, 75),
-        cv::Vec3b(180, 120, 255)
-    );
-    // img = this->invertBinaryImage(img);
-
-    profilerBinarization.stop();
-
-    ErrorHandler::notice(
-        std::string("Binarization took: ") +
-        std::to_string(profilerBinarization.getDurationNS() / 1000000) +
-        std::string("ms")
-    );
-
-    // --- Shape enhancements
-    // TODO: Make sure this is in proper order
-    profilerShapeEnhancements.start();
-
-    // img = this->erodeImage(
-    //     img,
-    //     3
-    // );
-    // img = this->dilateImage(
-    //     img,
-    //     3
-    // );
-
-    profilerShapeEnhancements.stop();
-
-    ErrorHandler::notice(
-        std::string("ShapeEnhancements took: ") +
-        std::to_string(profilerShapeEnhancements.getDurationNS() / 1000000) +
-        std::string("ms")
-    );
-
-    // --- Segmentation
-    profilerSegmentation.start();
-
-    auto segments = this->getImageSegmentsFloodFill(img);
-
-    profilerSegmentation.stop();
-
-    ErrorHandler::notice(
-        std::string("Segmentation took: ") +
-        std::to_string(profilerSegmentation.getDurationNS() / 1000000) +
-        std::string("ms")
-    );
-
-
-    // --- Detection
-    // 1. get candidates
-    auto candidates = this->findImageLogoCandidates(img, segments);
-
-    std::vector<structs::Segment> segs;
-    for (auto& cand: candidates) {
-        ErrorHandler::notice("-------");
-        ErrorHandler::notice("segment " + std::to_string(cand.segment.xMin) + "x" + std::to_string(cand.segment.yMin));
-        ErrorHandler::notice("hu 1 = " + std::to_string(cand.segment.getHuMomentInvariant(1)));
-        ErrorHandler::notice("hu 2 = " + std::to_string(cand.segment.getHuMomentInvariant(2)));
-        ErrorHandler::notice("hu 3 = " + std::to_string(cand.segment.getHuMomentInvariant(3)));
-        ErrorHandler::notice("hu 4 = " + std::to_string(cand.segment.getHuMomentInvariant(4)));
-        ErrorHandler::notice("hu 5 = " + std::to_string(cand.segment.getHuMomentInvariant(5)));
-        ErrorHandler::notice("hu 6 = " + std::to_string(cand.segment.getHuMomentInvariant(6)));
-        ErrorHandler::notice("hu 7 = " + std::to_string(cand.segment.getHuMomentInvariant(7)));
-
-        segs.push_back(cand.segment);
-    }
-
-    // 2. match letters
-    // TODO
-
-    img = this->drawSegmentsBBoxes(img, segs);
+    img = this->drawSegmentsBBoxes(img, letterSegments);
 
     cv::imshow("test", img);
 
     cv::waitKey(-1);
 }
+
+cv::Mat
+ImgProcessor::processPreEnhance(const cv::Mat& img)
+const
+{
+    auto resultImg = img;
+
+    PerformanceTimer profiler;
+
+    profiler.start();
+
+    // Do nothing
+
+    profiler.stop();
+
+    ErrorHandler::notice(
+        std::string("PreEnhance phase took: ") +
+        std::to_string(profiler.getDurationNS() / 1000000) +
+        std::string("ms")
+    );
+
+    return resultImg;
+}
+
+cv::Mat
+ImgProcessor::processBinarize(const cv::Mat& img)
+const
+{
+    auto resultImg = img;
+
+    PerformanceTimer profiler;
+
+    profiler.start();
+
+    resultImg = this->binarizeImage(
+        resultImg,
+        cv::Vec3b(0, 0, 75),
+        cv::Vec3b(180, 120, 255)
+    );
+    // resultImg = this->invertBinaryImage(resultImg);
+
+    profiler.stop();
+
+    ErrorHandler::notice(
+        std::string("Binarize phase took: ") +
+        std::to_string(profiler.getDurationNS() / 1000000) +
+        std::string("ms")
+    );
+
+    return resultImg;
+}
+
+cv::Mat
+ImgProcessor::processBinaryEnhance(const cv::Mat& img)
+const
+{
+    auto resultImg = img;
+
+    PerformanceTimer profiler;
+
+    // TODO: Make sure this is in proper order
+    profiler.start();
+
+    // resultImg = this->erodeImage(
+    //     resultImg,
+    //     3
+    // );
+    // resultImg = this->dilateImage(
+    //     resultImg,
+    //     3
+    // );
+
+    profiler.stop();
+
+    ErrorHandler::notice(
+        std::string("BinaryEnhance phase took: ") +
+        std::to_string(profiler.getDurationNS() / 1000000) +
+        std::string("ms")
+    );
+
+    return resultImg;
+}
+
+std::vector<structs::Segment>
+ImgProcessor::processSegmentation(const cv::Mat& img)
+const
+{
+    auto resultImg = img;
+
+    PerformanceTimer profiler;
+
+    profiler.start();
+
+    auto segments = this->getImageSegmentsFloodFill(resultImg);
+
+    profiler.stop();
+
+    ErrorHandler::notice(
+        std::string("Segmentation phase took: ") +
+        std::to_string(profiler.getDurationNS() / 1000000) +
+        std::string("ms")
+    );
+
+    return segments;
+}
+
+std::vector<structs::Candidate>
+ImgProcessor::processFilterCandidates(const cv::Mat& img, const std::vector<structs::Segment>& segments)
+const
+{
+    PerformanceTimer profiler;
+
+    profiler.start();
+
+    auto candidates = this->findImageLogoCandidates(img, segments);
+
+    std::vector<structs::Candidate> matchingCandidates;
+
+    for (auto& candidate: candidates) {
+        // ErrorHandler::notice(cand.segment.classify());
+
+        if (!candidate.segment.isClassifiedAsLetter()) {
+            continue;
+        }
+
+        matchingCandidates.push_back(candidate);
+
+        // ErrorHandler::notice("-------");
+        // ErrorHandler::notice("segment " + std::to_string(cand.segment.xMin) + "x" + std::to_string(cand.segment.yMin));
+        // ErrorHandler::notice("hu 1 = " + std::to_string(cand.segment.getHuMomentInvariant(1)));
+        // ErrorHandler::notice("hu 2 = " + std::to_string(cand.segment.getHuMomentInvariant(2)));
+        // ErrorHandler::notice("hu 3 = " + std::to_string(cand.segment.getHuMomentInvariant(3)));
+        // ErrorHandler::notice("hu 4 = " + std::to_string(cand.segment.getHuMomentInvariant(4)));
+        // ErrorHandler::notice("hu 5 = " + std::to_string(cand.segment.getHuMomentInvariant(5)));
+        // ErrorHandler::notice("hu 6 = " + std::to_string(cand.segment.getHuMomentInvariant(6)));
+        // ErrorHandler::notice("hu 7 = " + std::to_string(cand.segment.getHuMomentInvariant(7)));
+
+        // ErrorHandler::notice("-------");
+        // ErrorHandler::notice("segment " + std::to_string(cand.segment.xMin) + "x" + std::to_string(cand.segment.yMin));
+        // ErrorHandler::notice("classification = " + cand.segment.classify());
+    }
+
+    profiler.stop();
+
+    ErrorHandler::notice(
+        std::string("FilterCandidates phase took: ") +
+        std::to_string(profiler.getDurationNS() / 1000000) +
+        std::string("ms")
+    );
+
+    return matchingCandidates;
+}
+
+std::vector<structs::Segment>
+ImgProcessor::processDetection(const std::vector<structs::Candidate>& candidates)
+const
+{
+    PerformanceTimer profiler;
+
+    profiler.start();
+
+    std::vector<structs::Segment> segments;
+
+    for (auto& candidate: candidates) {
+        segments.push_back(candidate.segment);
+    }
+
+    profiler.stop();
+
+    ErrorHandler::notice(
+        std::string("Detection phase took: ") +
+        std::to_string(profiler.getDurationNS() / 1000000) +
+        std::string("ms")
+    );
+
+    return segments;
+}
+
 
 cv::Mat
 ImgProcessor::binarizeImage(const cv::Mat& img, const unsigned int& threshold)

@@ -46,6 +46,13 @@ namespace pobr::imgProcessing
         const void assertIsReady() const;
 
         cv::Vec3d rgb2HSV(const cv::Vec3b opencvRGB) const;
+
+        cv::Mat processPreEnhance(const cv::Mat& img) const;
+        cv::Mat processBinarize(const cv::Mat& img) const;
+        cv::Mat processBinaryEnhance(const cv::Mat& img) const;
+        std::vector<structs::Segment> processSegmentation(const cv::Mat& img) const;
+        std::vector<structs::Candidate> processFilterCandidates(const cv::Mat& img, const std::vector<structs::Segment>& segments) const;
+        std::vector<structs::Segment> processDetection(const std::vector<structs::Candidate>& candidates) const;
     };
 }
 
