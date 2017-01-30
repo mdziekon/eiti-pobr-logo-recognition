@@ -135,55 +135,6 @@ const
     return area;
 }
 
-const uint64_t
-Segment::getCircumference()
-const
-{
-    const auto& pixels = this->pixels;
-    uint64_t circumference = 0;
-
-    for (int x = 0; x < pixels.cols; ++x) {
-        for (int y = 0; y < pixels.rows; ++y) {
-            auto& point = pixels(y, x);
-
-            if (point[0] != consts::colors::white) {
-                continue;
-            }
-
-            if (x == 0 || x == this->pixels.cols - 1) {
-                circumference++;
-                continue;
-            }
-            if (y == 0 || y == this->pixels.rows - 1) {
-                circumference++;
-                continue;
-            }
-
-            if (
-                pixels(y + 1, x)[0] != consts::colors::white ||
-                pixels(y - 1, x)[0] != consts::colors::white ||
-                pixels(y, x + 1)[0] != consts::colors::white ||
-                pixels(y, x - 1)[0] != consts::colors::white
-            ) {
-                circumference++;
-                continue;
-            }
-        }
-    }
-
-    return circumference;
-}
-
-const double
-Segment::getW3()
-const
-{
-    const double circumference = ((double) this->getCircumference());
-    const double area = ((double) this->getArea());
-
-    return (circumference / (2 * std::sqrt(area * 3.14))) - 1;
-}
-
 const double
 Segment::getNormalMoment(const uint64_t& p, const uint64_t& q)
 const
