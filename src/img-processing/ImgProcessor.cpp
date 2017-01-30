@@ -210,8 +210,6 @@ const
     std::vector<structs::Candidate> matchingCandidates;
 
     for (auto& candidate: candidates) {
-        // Logger::notice(cand.segment.classify());
-
         if (!candidate.segment.isClassifiedAsLetter()) {
             continue;
         }
@@ -219,18 +217,18 @@ const
         matchingCandidates.push_back(candidate);
 
         // Logger::notice("-------");
-        // Logger::notice("segment " + std::to_string(cand.segment.xMin) + "x" + std::to_string(cand.segment.yMin));
-        // Logger::notice("hu 1 = " + std::to_string(cand.segment.getHuMomentInvariant(1)));
-        // Logger::notice("hu 2 = " + std::to_string(cand.segment.getHuMomentInvariant(2)));
-        // Logger::notice("hu 3 = " + std::to_string(cand.segment.getHuMomentInvariant(3)));
-        // Logger::notice("hu 4 = " + std::to_string(cand.segment.getHuMomentInvariant(4)));
-        // Logger::notice("hu 5 = " + std::to_string(cand.segment.getHuMomentInvariant(5)));
-        // Logger::notice("hu 6 = " + std::to_string(cand.segment.getHuMomentInvariant(6)));
-        // Logger::notice("hu 7 = " + std::to_string(cand.segment.getHuMomentInvariant(7)));
+        // Logger::notice("segment " + std::to_string(candidate.segment.xMin) + "x" + std::to_string(candidate.segment.yMin));
+        // Logger::notice("hu 1 = " + std::to_string(candidate.segment.getHuMomentInvariant(1)));
+        // Logger::notice("hu 2 = " + std::to_string(candidate.segment.getHuMomentInvariant(2)));
+        // Logger::notice("hu 3 = " + std::to_string(candidate.segment.getHuMomentInvariant(3)));
+        // Logger::notice("hu 4 = " + std::to_string(candidate.segment.getHuMomentInvariant(4)));
+        // Logger::notice("hu 5 = " + std::to_string(candidate.segment.getHuMomentInvariant(5)));
+        // Logger::notice("hu 6 = " + std::to_string(candidate.segment.getHuMomentInvariant(6)));
+        // Logger::notice("hu 7 = " + std::to_string(candidate.segment.getHuMomentInvariant(7)));
 
         // Logger::notice("-------");
-        // Logger::notice("segment " + std::to_string(cand.segment.xMin) + "x" + std::to_string(cand.segment.yMin));
-        // Logger::notice("classification = " + cand.segment.classify());
+        // Logger::notice("segment " + std::to_string(candidate.segment.xMin) + "x" + std::to_string(candidate.segment.yMin));
+        // Logger::notice("classification = " + candidate.segment.classify());
     }
 
     profiler.stop();
