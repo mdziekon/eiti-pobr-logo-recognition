@@ -24,7 +24,12 @@ App::App(const std::vector<std::string>& arguments)
         imgProcessor.loadImg(arguments.at(0));
 
         auto letterSegments = imgProcessor.process();
-        auto img = imgProcessor.drawSegmentsBBoxes(imgProcessor.getImg(), letterSegments);
+        auto img = imgProcessor.drawSegmentsBBoxes(
+            imgProcessor.getImg(),
+            letterSegments,
+            { 0, 0, 0 },
+            3
+        );
 
         cv::imshow(arguments.at(0), img);
 
