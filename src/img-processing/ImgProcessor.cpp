@@ -105,7 +105,10 @@ const
 
     profiler.start();
 
-    // Do nothing
+    // Note: disabled, as not needed
+    //       supplied images are rather sharp
+
+    // resultImg = enhance::unsharpMasking(resultImg);
 
     profiler.stop();
 
@@ -129,6 +132,9 @@ const
     PerformanceTimer profiler;
 
     profiler.start();
+
+    // Note: previous method of image binarization
+    //       replaced by much better "color mixer + thresholding" method
 
     // resultImg = binarization::binarizeImage(
     //     resultImg,
@@ -169,6 +175,10 @@ const
     PerformanceTimer profiler;
 
     profiler.start();
+
+    // Note: currently disabled, as it's:
+    //       1. not needed in here
+    //       2. breaks some logos recognition
 
     // resultImg = enhance::erodeImage(
     //     resultImg,
@@ -236,20 +246,6 @@ const
         }
 
         filteredSegments.push_back(segment);
-
-        // Logger::notice("-------");
-        // Logger::notice("segment " + std::to_string(candidate.segment.xMin) + "x" + std::to_string(candidate.segment.yMin));
-        // Logger::notice("hu 1 = " + std::to_string(candidate.segment.getHuMomentInvariant(1)));
-        // Logger::notice("hu 2 = " + std::to_string(candidate.segment.getHuMomentInvariant(2)));
-        // Logger::notice("hu 3 = " + std::to_string(candidate.segment.getHuMomentInvariant(3)));
-        // Logger::notice("hu 4 = " + std::to_string(candidate.segment.getHuMomentInvariant(4)));
-        // Logger::notice("hu 5 = " + std::to_string(candidate.segment.getHuMomentInvariant(5)));
-        // Logger::notice("hu 6 = " + std::to_string(candidate.segment.getHuMomentInvariant(6)));
-        // Logger::notice("hu 7 = " + std::to_string(candidate.segment.getHuMomentInvariant(7)));
-
-        // Logger::notice("-------");
-        // Logger::notice("segment " + std::to_string(candidate.segment.xMin) + "x" + std::to_string(candidate.segment.yMin));
-        // Logger::notice("classification = " + candidate.segment.classify());
     }
 
     profiler.stop();
