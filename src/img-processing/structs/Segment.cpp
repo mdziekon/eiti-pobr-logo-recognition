@@ -267,17 +267,17 @@ const
     if (this->isLetterT()) {
         return "LETTER_T";
     }
-    if (this->isLetterE()) {
-        return "LETTER_E";
+    if (this->isLetterO()) {
+        return "LETTER_O";
     }
     if (this->isLetterS()) {
         return "LETTER_S";
     }
+    if (this->isLetterE()) {
+        return "LETTER_E";
+    }
     if (this->isLetterC()) {
         return "LETTER_C";
-    }
-    if (this->isLetterO()) {
-        return "LETTER_O";
     }
 
     return "ERROR_UNKNOWN";
@@ -592,21 +592,29 @@ const
     const auto hu2 = this->getHuMomentInvariant(2);
     const auto hu3 = this->getHuMomentInvariant(3);
     const auto hu4 = this->getHuMomentInvariant(4);
+    const auto hu5 = this->getHuMomentInvariant(5);
+    const auto hu6 = this->getHuMomentInvariant(6);
     const auto hu7 = this->getHuMomentInvariant(7);
 
-    if (hu1 < 0.311719 * 0.75 || hu1 > 0.436134 * 1.25) {
+    if (hu1 < 0.307891 * 0.95 || hu1 > 0.594335 * 1.05) {
         return false;
     }
-    if (hu2 < 0.002169 * 0.75 || hu2 > 0.068402 * 1.25) {
+    if (hu2 < 0.001351 * 0.95 || hu2 > 0.169166 * 1.05) {
         return false;
     }
-    if (hu3 < 0.026323 * 0.75 || hu3 > 0.075005 * 1.25) {
+    if (hu3 < 0.015959 * 1 || hu3 > 0.202738 * 1.05) {
         return false;
     }
-    if (hu4 < 0.000072 * 0.75 || hu4 > 0.005648 * 1.25) {
+    if (hu4 < 0.000067 * 0.95 || hu4 > 0.049295 * 1.05) {
         return false;
     }
-    if (hu7 < 0.023207 * 0.75 || hu7 > 0.036627 * 1.25) {
+    if (hu5 < -0.000001 || hu5 > 0.004918 * 1.05) {
+        return false;
+    }
+    if (hu6 < -0.000001 || hu6 > 0.017944 * 1.05) {
+        return false;
+    }
+    if (hu7 < 0.02213 * 0.95 || hu7 > 0.061017 * 1.05) {
         return false;
     }
 
@@ -621,21 +629,29 @@ const
     const auto hu2 = this->getHuMomentInvariant(2);
     const auto hu3 = this->getHuMomentInvariant(3);
     const auto hu4 = this->getHuMomentInvariant(4);
+    const auto hu5 = this->getHuMomentInvariant(5);
+    const auto hu6 = this->getHuMomentInvariant(6);
     const auto hu7 = this->getHuMomentInvariant(7);
 
-    if (hu1 < 0.28205 * 0.75 || hu1 > 0.414592 * 1.25) {
+    if (hu1 < 0.266877 * 0.95 || hu1 > 0.580719 * 1.05) {
         return false;
     }
-    if (hu2 < 0.003996 * 0.75 || hu2 > 0.074936 * 1.25) {
+    if (hu2 < 0.003589 * 0.95 || hu2 > 0.170131 * 1.05) {
         return false;
     }
-    if (hu3 < 0.000485 * 0.75 || hu3 > 0.004407 * 1.25) {
+    if (hu3 < 0.000315 * 0.95 || hu3 > 0.015959 * 1) {
         return false;
     }
-    if (hu4 < 0.000013 * 0.75 || hu4 > 0.000442 * 1.25) {
+    if (hu4 < 0.000005 * 0.95 || hu4 > 0.004738 * 1.05) {
         return false;
     }
-    if (hu7 < 0.018604 * 0.75 || hu7 > 0.025658 * 1.25) {
+    if (hu5 < -0.000012 * 1.05 || hu5 > 0.000029 * 1.05) {
+        return false;
+    }
+    if (hu6 < -0.000882 * 1.05 || hu6 > 0.000715 * 1.05) {
+        return false;
+    }
+    if (hu7 < 0.016909 * 0.95 || hu7 > 0.041776 * 1.05) {
         return false;
     }
 
@@ -650,21 +666,29 @@ const
     const auto hu2 = this->getHuMomentInvariant(2);
     const auto hu3 = this->getHuMomentInvariant(3);
     const auto hu4 = this->getHuMomentInvariant(4);
+    const auto hu5 = this->getHuMomentInvariant(5);
+    const auto hu6 = this->getHuMomentInvariant(6);
     const auto hu7 = this->getHuMomentInvariant(7);
 
-    if (hu1 < 0.280296 * 0.75 || hu1 > 0.362073 * 1.25) {
+    if (hu1 < 0.278918 * 0.95 || hu1 > 0.463963 * 1.05) {
         return false;
     }
-    if (hu2 < 0.001189 * 0.75 || hu2 > 0.036808 * 1.25) {
+    if (hu2 < 0.000547 * 0.95 || hu2 > 0.074239 * 1.05) {
         return false;
     }
-    if (hu3 < 0.000033 * 0.75 || hu3 > 0.000296 * 1.25) {
+    if (hu3 < 0.000022 * 0.95 || hu3 > 0.000878 * 1.05) {
         return false;
     }
-    if (hu4 < 0.000002 * 0.75 || hu4 > 0.000033 * 1.25) {
+    if (hu4 < -0.000001 || hu4 > 0.000143 * 1.05) {
         return false;
     }
-    if (hu7 < 0.018977 * 0.75 || hu7 > 0.029561 * 1.25) {
+    if (hu5 < -0.000001 || hu5 > 0.000001) {
+        return false;
+    }
+    if (hu6 < -0.000018 * 1.05 || hu6 > 0.000034 * 1.05) {
+        return false;
+    }
+    if (hu7 < 0.018778 * 0.95 || hu7 > 0.037327 * 1.05) {
         return false;
     }
 
@@ -679,21 +703,29 @@ const
     const auto hu2 = this->getHuMomentInvariant(2);
     const auto hu3 = this->getHuMomentInvariant(3);
     const auto hu4 = this->getHuMomentInvariant(4);
+    const auto hu5 = this->getHuMomentInvariant(5);
+    const auto hu6 = this->getHuMomentInvariant(6);
     const auto hu7 = this->getHuMomentInvariant(7);
 
-    if (hu1 < 0.352379 * 0.75 || hu1 > 0.47044 * 1.25) {
+    if (hu1 < 0.346056 * 0.95 || hu1 > 0.619361 * 1.05) {
         return false;
     }
-    if (hu2 < 0.000268 * 0.75 || hu2 > 0.066352 * 1.25) {
+    if (hu2 < 0.000357 * 0.95 || hu2 > 0.13103 * 1.05) {
         return false;
     }
-    if (hu3 < 0.005753 * 0.75 || hu3 > 0.027387 * 1.25) {
+    if (hu3 < 0.00556 * 0.95 || hu3 > 0.070153 * 1.05) {
         return false;
     }
-    if (hu4 < 0.000054 * 0.75 || hu4 > 0.005462 * 1.25) {
+    if (hu4 < 0.000056 * 0.95 || hu4 > 0.011795 * 1.05) {
         return false;
     }
-    if (hu7 < 0.030236 * 0.75 || hu7 > 0.048242 * 1.25) {
+    if (hu5 < -0.000186 * 1.05 || hu5 > 0.000025 * 1.05) {
+        return false;
+    }
+    if (hu6 < -0.002186 * 1.05 || hu6 > -0.000081 * 0.95) {
+        return false;
+    }
+    if (hu7 < 0.029193 * 0.95 || hu7 > 0.063145 * 1.05) {
         return false;
     }
 
@@ -708,21 +740,29 @@ const
     const auto hu2 = this->getHuMomentInvariant(2);
     const auto hu3 = this->getHuMomentInvariant(3);
     const auto hu4 = this->getHuMomentInvariant(4);
+    const auto hu5 = this->getHuMomentInvariant(5);
+    const auto hu6 = this->getHuMomentInvariant(6);
     const auto hu7 = this->getHuMomentInvariant(7);
 
-    if (hu1 < 0.324674 * 0.75 || hu1 > 0.39543 * 1.25) {
+    if (hu1 < 0.3217 * 0.95 || hu1 > 0.457977 * 1.05) {
         return false;
     }
-    if (hu2 < 0.000849 * 0.75 || hu2 > 0.013153 * 1.25) {
+    if (hu2 < 0.001004 * 0.95 || hu2 > 0.024156 * 1.05) {
         return false;
     }
-    if (hu3 < 0.000003 * 0.75 || hu3 > 0.000035 * 1.25) {
+    if (hu3 < 0.000000 || hu3 > 0.000085 * 1.05) {
         return false;
     }
-    if (hu4 < 0.000001 * 0.75 || hu4 > 0.000005 * 1.25) {
+    if (hu4 < -0.000001 || hu4 > 0.000121 * 1.05) {
         return false;
     }
-    if (hu7 < 0.024815 * 0.75 || hu7 > 0.037956 * 1.25) {
+    if (hu5 < -0.000001 || hu5 > 0.000001) {
+        return false;
+    }
+    if (hu6 < -0.000001 || hu6 > 0.000021 * 1.05) {
+        return false;
+    }
+    if (hu7 < 0.02311 * 0.95 || hu7 > 0.047001 * 1.05) {
         return false;
     }
 
