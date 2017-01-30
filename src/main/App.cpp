@@ -3,9 +3,11 @@
 #include <opencv2/highgui/highgui.hpp>
 
 #include "../utils/logger/Logger.hpp"
+#include "../utils/cmd-parser/CmdParser.hpp"
 #include "../img-processing/ImgProcessor.hpp"
 
 using Logger = pobr::utils::Logger;
+using CmdParser = pobr::utils::CmdParser;
 using ImgProcessor = pobr::imgProcessing::ImgProcessor;
 
 using App = pobr::main::App;
@@ -14,24 +16,41 @@ App::App(const std::vector<std::string>& arguments)
 {
     try
     {
-        if (arguments.size() < 1)
+        auto cmdParser = CmdParser(arguments);
+
+        auto const filepath = cmdParser.getFlagValue("file");
+        const bool showBinaryImg = cmdParser.hasFlag("binary");
+
+        if (filepath.length() < 1)
         {
             Logger::error("No input file specified");
         }
 
         auto imgProcessor = ImgProcessor();
 
-        imgProcessor.loadImg(arguments.at(0));
+        imgProcessor.loadImg(filepath);
 
         auto letterSegments = imgProcessor.process();
-        auto img = imgProcessor.drawSegmentsBBoxes(
-            imgProcessor.getImg(),
-            letterSegments,
-            { 0, 0, 0 },
-            3
-        );
 
-        cv::imshow(arguments.at(0), img);
+        if (showBinaryImg) {
+            auto img = imgProcessor.drawSegmentsBBoxes(
+                imgProcessor.getBinarizedImg(),
+                letterSegments,
+                { 0, 0, 255 },
+                3
+            );
+
+            cv::imshow(filepath, img);
+        } else {
+            auto img = imgProcessor.drawSegmentsBBoxes(
+                imgProcessor.getImg(),
+                letterSegments,
+                { 0, 0, 0 },
+                3
+            );
+
+            cv::imshow(filepath, img);
+        }
 
         cv::waitKey(-1);
 
