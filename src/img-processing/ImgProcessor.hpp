@@ -17,6 +17,7 @@ namespace pobr::imgProcessing
     public:
         const void loadImg(const std::string& imgPath);
         const cv::Mat& getImg() const;
+        const cv::Mat getBinarizedImg() const;
         const std::vector<structs::Segment> process() const;
 
         cv::Mat drawSegmentsBBoxes(

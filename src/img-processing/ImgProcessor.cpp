@@ -61,6 +61,21 @@ const
     return this->img;
 }
 
+const cv::Mat
+ImgProcessor::getBinarizedImg()
+const
+{
+    this->assertIsReady();
+
+    auto img = this->img;
+
+    img = this->processPreEnhance(img);
+    img = this->processBinarize(img);
+    img = this->processBinaryEnhance(img);
+
+    return img;
+}
+
 const std::vector<structs::Segment>
 ImgProcessor::process()
 const
