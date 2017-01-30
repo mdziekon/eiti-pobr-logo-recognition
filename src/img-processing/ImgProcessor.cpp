@@ -113,12 +113,22 @@ const
 
     profiler.start();
 
+    // resultImg = binarization::binarizeImage(
+    //     resultImg,
+    //     cv::Vec3b(0, 0, 75),
+    //     cv::Vec3b(180, 120, 255)
+    // );
+    // resultImg = binarization::invertBinaryImage(resultImg);
+
+    resultImg = binarization::mixImageColors(
+        resultImg,
+        { -125, -140, 180 },
+        false
+    );
     resultImg = binarization::binarizeImage(
         resultImg,
-        cv::Vec3b(0, 0, 75),
-        cv::Vec3b(180, 120, 255)
+        50
     );
-    // resultImg = binarization::invertBinaryImage(resultImg);
 
     profiler.stop();
 
