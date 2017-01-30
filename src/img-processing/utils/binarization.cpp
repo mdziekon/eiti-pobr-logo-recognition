@@ -11,6 +11,43 @@ namespace matrixOps = pobr::imgProcessing::utils::matrixOps;
 namespace binarization = pobr::imgProcessing::utils::binarization;
 
 cv::Mat
+binarization::mixImageColors(const cv::Mat& img, const cv::Vec3i& coefficients, const bool& preserveLuminosity)
+{
+    auto resultImg = img.clone();
+
+    matrixOps::forEachPixel(
+        img,
+        [&](const uint64_t& x, const uint64_t& y) -> void
+        {
+            auto& thisPixel = img.at<cv::Vec3b>(y, x);
+
+            int value = (
+                (((double) thisPixel[0]) * (((double) coefficients[0])) / 100) +
+                (((double) thisPixel[1]) * (((double) coefficients[1])) / 100) +
+                (((double) thisPixel[2]) * (((double) coefficients[2])) / 100)
+            );
+
+            if (preserveLuminosity) {
+                // TODO: not working properly, flipping the sign
+                double scaleNominator = ((double) (coefficients[0] + coefficients[1] + coefficients[2])) / 100;
+                double scale = 1 / scaleNominator;
+
+                value = value * scale;
+            }
+
+            value = std::min(value, 255);
+            value = std::max(value, 0);
+
+            resultImg.at<cv::Vec3b>(y, x)[0] = value;
+            resultImg.at<cv::Vec3b>(y, x)[1] = value;
+            resultImg.at<cv::Vec3b>(y, x)[2] = value;
+        }
+    );
+
+    return resultImg;
+}
+
+cv::Mat
 binarization::binarizeImage(const cv::Mat& img, const unsigned int& threshold)
 {
     auto resultImg = img.clone();
