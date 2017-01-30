@@ -6,7 +6,6 @@
 #include <opencv2/core/core.hpp>
 
 #include "./structs/Segment.hpp"
-#include "./structs/Candidate.hpp"
 
 namespace structs = pobr::imgProcessing::structs;
 
@@ -37,8 +36,8 @@ namespace pobr::imgProcessing
         cv::Mat processBinarize(const cv::Mat& img) const;
         cv::Mat processBinaryEnhance(const cv::Mat& img) const;
         std::vector<structs::Segment> processSegmentation(const cv::Mat& img) const;
-        std::vector<structs::Candidate> processFilterCandidates(const std::vector<structs::Segment>& segments) const;
-        std::vector<structs::Segment> processDetection(const std::vector<structs::Candidate>& candidates) const;
+        std::vector<structs::Segment> processFilterCandidates(const std::vector<structs::Segment>& segments) const;
+        std::vector<structs::Segment> processDetection(const std::vector<structs::Segment>& candidates) const;
     };
 }
 

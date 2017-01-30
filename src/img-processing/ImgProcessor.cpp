@@ -164,7 +164,6 @@ const
 
     PerformanceTimer profiler;
 
-    // TODO: Make sure this is in proper order
     profiler.start();
 
     // resultImg = enhance::erodeImage(
@@ -210,7 +209,7 @@ const
     return segments;
 }
 
-std::vector<structs::Candidate>
+std::vector<structs::Segment>
 ImgProcessor::processFilterCandidates(
     const std::vector<structs::Segment>& segments
 )
@@ -220,16 +219,14 @@ const
 
     profiler.start();
 
-    auto candidates = detection::findImageLogoCandidates(segments);
+    std::vector<structs::Segment> filteredSegments;
 
-    std::vector<structs::Candidate> matchingCandidates;
-
-    for (auto& candidate: candidates) {
-        if (!candidate.segment.isClassifiedAsLetter()) {
+    for (auto& segment: segments) {
+        if (!segment.isClassifiedAsLetter()) {
             continue;
         }
 
-        matchingCandidates.push_back(candidate);
+        filteredSegments.push_back(segment);
 
         // Logger::notice("-------");
         // Logger::notice("segment " + std::to_string(candidate.segment.xMin) + "x" + std::to_string(candidate.segment.yMin));
@@ -254,24 +251,18 @@ const
         std::string("ms")
     );
 
-    return matchingCandidates;
+    return filteredSegments;
 }
 
 std::vector<structs::Segment>
-ImgProcessor::processDetection(const std::vector<structs::Candidate>& candidates)
+ImgProcessor::processDetection(const std::vector<structs::Segment>& segments)
 const
 {
     PerformanceTimer profiler;
 
     profiler.start();
 
-    std::vector<structs::Segment> segments;
-
-    for (auto& candidate: candidates) {
-        segments.push_back(candidate.segment);
-    }
-
-    segments = detection::groupLetters(segments);
+    auto groupedSegments = detection::groupLetters(segments);
 
     profiler.stop();
 
@@ -281,7 +272,7 @@ const
         std::string("ms")
     );
 
-    return segments;
+    return groupedSegments;
 }
 
 cv::Mat
