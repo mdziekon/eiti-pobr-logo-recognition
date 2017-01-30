@@ -43,7 +43,10 @@ namespace pobr::imgProcessing::structs
         const double getCentralMoment(const uint64_t& p, const uint64_t& q, const double& m00, const double& m10, const double& m01) const;
         const double getHuMomentInvariant(const uint8_t& no) const;
 
+
         const std::string classify() const;
+        const bool isSmallEnough() const;
+        const bool isBigEnough() const;
         const bool isClassifiedAsLetter() const;
 
     protected:

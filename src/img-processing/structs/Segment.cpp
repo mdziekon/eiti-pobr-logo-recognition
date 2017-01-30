@@ -257,8 +257,11 @@ const std::string
 Segment::classify()
 const
 {
-    if (this->getArea() < 100) {
+    if (!this->isBigEnough()) {
         return "ERROR_TOOSMALL";
+    }
+    if (!this->isSmallEnough()) {
+        return "ERROR_TOOBIG";
     }
 
     if (this->isLetterT()) {
@@ -278,6 +281,20 @@ const
     }
 
     return "ERROR_UNKNOWN";
+}
+
+const bool
+Segment::isSmallEnough()
+const
+{
+    return (this->getArea() <= 2000);
+}
+
+const bool
+Segment::isBigEnough()
+const
+{
+    return (this->getArea() >= 60);
 }
 
 const bool
