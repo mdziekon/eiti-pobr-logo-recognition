@@ -44,7 +44,7 @@ segmentation::getImageSegmentsScanMerge(const cv::Mat& img, const bool& useDiago
         lookupKernelValues
     );
 
-    // TODO: Kernel application skips img edges
+    // Note: Kernel application skips img edges
     //       replace with forEachPixel maybe?
     matrixOps::applyKernel<double, double, double>(
         segmentsIDs,
@@ -141,6 +141,8 @@ segmentation::getImageSegmentsScanMerge(const cv::Mat& img, const bool& useDiago
     for (const auto& segmentPtr: uniqSegments) {
         segments.push_back((*segmentPtr));
     }
+
+    // Note: does not update Segment's pixels
 
     return segments;
 }

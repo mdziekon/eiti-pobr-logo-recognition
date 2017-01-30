@@ -186,6 +186,9 @@ detection::groupLetters(
                 bbox.yMax = segmentT.yMax;
             }
 
+            // Note: possible slight optimisation
+            //       remove used letters from containers to prevent re-checking them
+
             boundingBoxes.push_back(bbox);
         }
     }
