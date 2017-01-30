@@ -15,7 +15,8 @@ namespace pobr::imgProcessing::utils::segmentation
         const bool& useDiagonalDetection = true
     );
     std::vector<structs::Segment> getImageSegmentsFloodFill(
-        const cv::Mat& img
+        const cv::Mat& img,
+        const bool& diagDetection = false
     );
 }
 

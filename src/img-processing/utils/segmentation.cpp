@@ -146,7 +146,7 @@ segmentation::getImageSegmentsScanMerge(const cv::Mat& img, const bool& useDiago
 }
 
 std::vector<structs::Segment>
-segmentation::getImageSegmentsFloodFill(const cv::Mat& img)
+segmentation::getImageSegmentsFloodFill(const cv::Mat& img, const bool& diagDetection)
 {
     cv::Mat_<cv::Vec3i> segmentedImg = img.clone();
 
@@ -177,6 +177,20 @@ segmentation::getImageSegmentsFloodFill(const cv::Mat& img)
                     for (int adjacentX = -1; adjacentX <= 1; ++adjacentX) {
                         if (adjacentY == 0 && adjacentX == 0) {
                             continue;
+                        }
+                        if (!diagDetection) {
+                            if (adjacentY == -1 && adjacentX == -1) {
+                                continue;
+                            }
+                            if (adjacentY == 1 && adjacentX == -1) {
+                                continue;
+                            }
+                            if (adjacentY == -1 && adjacentX == 1) {
+                                continue;
+                            }
+                            if (adjacentY == 1 && adjacentX == 1) {
+                                continue;
+                            }
                         }
                         if (neighbourY + adjacentY < 0 || neighbourY + adjacentY >= img.rows) {
                             continue;
