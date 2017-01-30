@@ -179,6 +179,14 @@ Okazało się jednak, że nie wszystkie obrazy dobrze "reagują" na takie przeks
 
 Przygotowany obraz binarny został następnie poddany procesowi segmentacji, czyli grupowania pikseli w spójne obszary. Wykorzystano do tego algorytm Floodfill, który dla każdego białego piksela starał się odpowiednio "zalać" danym identyfikatorem jego sąsiadów, tworząc przez to zgrupowanie pikseli. Wykorzystana implementacja algorytmu Floodfill korzysta z ręcznie przygotowanego stosu na "przeszukiwanych sąsiadów" głównie ze względu na to, że standardowa wersja rekurencyjna znacznie spowalniała działanie programu, a dla większych obrazów mogła wywoływać błędy braku pamięci operacyjnej. Każda grupa pikseli została na końcu zapakowana do kontenera przechowującego zarówno same piksele, jak i tzw. Bounding Box całego obszaru.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=14cm]{pobr_proj_seg1.png}
+	\caption{Przykład segmentacji obrazu.}
+	\label{fig:pobr_proj_seg1}
+\end{figure}
+
+
 \subsection{Wstępna filtracja}
 
 Kolejnym etapem było filtrowanie niechcianych obiektów ze sceny. W pierwszym kroku nastąpiła eliminacja obiektów które są zbyt małe lub zbyt duże jak na litery loga. W drugiej części sprawdzane były niezmienniki momentowe segmentów (od M1 do M7), które ze względu na swoje właściwości pozwalają wykrywać podobne elementów, niezależnie od ich skalowania czy obrotu. W ramach eksperymentów wyznaczono przedziały wartości tych niezmienników, w których można było stwierdzić czy dany segment należy do np. klasy liter T lub S. Wszystkie inne obiekty, których niezmienniki nie znajdowały się w odpowiednich przedziałach, były odrzucane.
