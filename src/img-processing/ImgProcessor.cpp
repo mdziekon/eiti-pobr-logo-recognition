@@ -182,7 +182,7 @@ const
 
     profiler.start();
 
-    auto segments = segmentation::getImageSegmentsFloodFill(resultImg);
+    auto segments = segmentation::getImageSegmentsFloodFill(resultImg, false);
 
     profiler.stop();
 
@@ -283,8 +283,6 @@ const
     auto resultImg = img.clone();
 
     for (auto& segment: segments) {
-        // TODO: Safeguards maybe?
-
         for (int64_t x = segment.xMin - borderSize; x < segment.xMin; x++) {
             for (int64_t y = segment.yMin - borderSize; y <= segment.yMax + borderSize; y++) {
                 if (x < 0 || y < 0 || x >= img.cols || y >= img.rows) {
