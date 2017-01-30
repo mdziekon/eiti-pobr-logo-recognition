@@ -129,7 +129,7 @@ Kompilacja programu jest możliwa za pomocą dwóch programów:
 	\item Scons - komenda \textbf{scons} (możliwe do uruchomienia z terminala, buduje program do pliku \textbf{build/run})
 \end{itemize}
 
-Do kompilacji wymagany jest kompilator wspierający opcję \textbf{C++1z} (wymagane wsparcie dla "Nested namespace definition"). Kompilatory wspierające tę opcję to:
+Do kompilacji wymagany jest kompilator wspierający opcję \textbf{C++1z} (wymagane wsparcie dla ``Nested namespace definition''). Kompilatory wspierające tę opcję to:
 \begin{itemize}
 	\item GCC w wersji 6.0.0
 	\item Clang w wersji 3.6
@@ -173,11 +173,11 @@ Znacznie lepsze rezultaty dało wykorzystanie miksera kolorów do kanału monoch
 
 Następny krok polegał na dodatkowym wyostrzeniu konturów obiektów sceny. W ramach eksperymentów zastosowano dwa przekształcenia - erozję oraz dylację, które w teorii powinny poprawić kontury obiektów oraz wypełnić wszelkie ewentualne ubytki w obiektach.
 
-Okazało się jednak, że nie wszystkie obrazy dobrze "reagują" na takie przekształcenia. Ze względu na to, że niektóre fragmenty obrazów były stosunkowo małe, transformacje doprowadzały do odwrotnego efektu niż zamierzony - zamiast poprawiać kontury, usuwały piksele niszcząc kształty obiektów. Ponieważ pierwotne kontury były na tyle dobre by móc kontynuować proces rozpoznawania, transformacje dylacji i erozji zostały wyłączone.
+Okazało się jednak, że nie wszystkie obrazy dobrze ``reagują'' na takie przekształcenia. Ze względu na to, że niektóre fragmenty obrazów były stosunkowo małe, transformacje doprowadzały do odwrotnego efektu niż zamierzony - zamiast poprawiać kontury, usuwały piksele niszcząc kształty obiektów. Ponieważ pierwotne kontury były na tyle dobre by móc kontynuować proces rozpoznawania, transformacje dylacji i erozji zostały wyłączone.
 
 \subsection{Segmentacja}
 
-Przygotowany obraz binarny został następnie poddany procesowi segmentacji, czyli grupowania pikseli w spójne obszary. Wykorzystano do tego algorytm Floodfill, który dla każdego białego piksela starał się odpowiednio "zalać" danym identyfikatorem jego sąsiadów, tworząc przez to zgrupowanie pikseli. Wykorzystana implementacja algorytmu Floodfill korzysta z ręcznie przygotowanego stosu na "przeszukiwanych sąsiadów" głównie ze względu na to, że standardowa wersja rekurencyjna znacznie spowalniała działanie programu, a dla większych obrazów mogła wywoływać błędy braku pamięci operacyjnej. Każda grupa pikseli została na końcu zapakowana do kontenera przechowującego zarówno same piksele, jak i tzw. Bounding Box całego obszaru.
+Przygotowany obraz binarny został następnie poddany procesowi segmentacji, czyli grupowania pikseli w spójne obszary. Wykorzystano do tego algorytm Floodfill, który dla każdego białego piksela starał się odpowiednio ``zalać'' danym identyfikatorem jego sąsiadów, tworząc przez to zgrupowanie pikseli. Wykorzystana implementacja algorytmu Floodfill korzysta z ręcznie przygotowanego stosu na ``przeszukiwanych sąsiadów'' głównie ze względu na to, że standardowa wersja rekurencyjna znacznie spowalniała działanie programu, a dla większych obrazów mogła wywoływać błędy braku pamięci operacyjnej. Każda grupa pikseli została na końcu zapakowana do kontenera przechowującego zarówno same piksele, jak i tzw. Bounding Box całego obszaru.
 
 \begin{figure}
 	\centering
@@ -193,7 +193,7 @@ Kolejnym etapem było filtrowanie niechcianych obiektów ze sceny. W pierwszym k
 
 \subsection{Detekcja poszukiwanych fragmentów}
 
-Ostatnim krokiem było rozpoznanie i stwierdzenie, czy wykryte segmenty zawierające litery są poprawnie ułożone i stanowią w swoim obrębie logo Tesco. Jako "kontur" podstawowy zostały wykorzystane litery T i O, ponieważ leżą na skraju loga. Program sprawdza wszystkie możliwe kombinacje wykrytych liter T i O, próbuje dopasować je do jednego fragmentu (sprawdzając, czy odległość między ich środkami pozwala na umieszczenie wewnątrz mniej więcej trzech dodatkowych liter E, S, C). Jeśli to się powiedzie, program stara się znaleźć pasujące w przewidywane miejsca kolejne, wewnętrzne litery wyrazu. W przypadku dopasowania wszystkich pięciu liter tworzony jest nowy segment, stanowiący Bounding Box dla całego loga Tesco.
+Ostatnim krokiem było rozpoznanie i stwierdzenie, czy wykryte segmenty zawierające litery są poprawnie ułożone i stanowią w swoim obrębie logo Tesco. Jako ``kontur'' podstawowy zostały wykorzystane litery T i O, ponieważ leżą na skraju loga. Program sprawdza wszystkie możliwe kombinacje wykrytych liter T i O, próbuje dopasować je do jednego fragmentu (sprawdzając, czy odległość między ich środkami pozwala na umieszczenie wewnątrz mniej więcej trzech dodatkowych liter E, S, C). Jeśli to się powiedzie, program stara się znaleźć pasujące w przewidywane miejsca kolejne, wewnętrzne litery wyrazu. W przypadku dopasowania wszystkich pięciu liter tworzony jest nowy segment, stanowiący Bounding Box dla całego loga Tesco.
 
 \begin{figure}
 	\centering
