@@ -84,19 +84,19 @@ const
 
     auto img = this->img;
 
-    img = this->processPreEnhance(img);
-    img = this->processBinarize(img);
-    img = this->processBinaryEnhance(img);
+    img = this->processPreEnhance(img, true);
+    img = this->processBinarize(img, true);
+    img = this->processBinaryEnhance(img, true);
 
-    auto segments = this->processSegmentation(img);
-    auto candidates = this->processFilterCandidates(segments);
-    auto letterSegments = this->processDetection(candidates);
+    auto segments = this->processSegmentation(img, true);
+    auto candidates = this->processFilterCandidates(segments, true);
+    auto letterSegments = this->processDetection(candidates, true);
 
     return letterSegments;
 }
 
 cv::Mat
-ImgProcessor::processPreEnhance(const cv::Mat& img)
+ImgProcessor::processPreEnhance(const cv::Mat& img, const bool& isProfiling)
 const
 {
     auto resultImg = img;
@@ -109,17 +109,19 @@ const
 
     profiler.stop();
 
-    Logger::notice(
-        std::string("PreEnhance phase took: ") +
-        std::to_string(profiler.getDurationNS() / 1000000) +
-        std::string("ms")
-    );
+    if (isProfiling) {
+        Logger::notice(
+            std::string("PreEnhance phase took: ") +
+            std::to_string(profiler.getDurationNS() / 1000000) +
+            std::string("ms")
+        );
+    }
 
     return resultImg;
 }
 
 cv::Mat
-ImgProcessor::processBinarize(const cv::Mat& img)
+ImgProcessor::processBinarize(const cv::Mat& img, const bool& isProfiling)
 const
 {
     auto resultImg = img;
@@ -147,17 +149,19 @@ const
 
     profiler.stop();
 
-    Logger::notice(
-        std::string("Binarize phase took: ") +
-        std::to_string(profiler.getDurationNS() / 1000000) +
-        std::string("ms")
-    );
+    if (isProfiling) {
+        Logger::notice(
+            std::string("Binarize phase took: ") +
+            std::to_string(profiler.getDurationNS() / 1000000) +
+            std::string("ms")
+        );
+    }
 
     return resultImg;
 }
 
 cv::Mat
-ImgProcessor::processBinaryEnhance(const cv::Mat& img)
+ImgProcessor::processBinaryEnhance(const cv::Mat& img, const bool& isProfiling)
 const
 {
     auto resultImg = img;
@@ -177,17 +181,19 @@ const
 
     profiler.stop();
 
-    Logger::notice(
-        std::string("BinaryEnhance phase took: ") +
-        std::to_string(profiler.getDurationNS() / 1000000) +
-        std::string("ms")
-    );
+    if (isProfiling) {
+        Logger::notice(
+            std::string("BinaryEnhance phase took: ") +
+            std::to_string(profiler.getDurationNS() / 1000000) +
+            std::string("ms")
+        );
+    }
 
     return resultImg;
 }
 
 std::vector<structs::Segment>
-ImgProcessor::processSegmentation(const cv::Mat& img)
+ImgProcessor::processSegmentation(const cv::Mat& img, const bool& isProfiling)
 const
 {
     auto resultImg = img;
@@ -200,18 +206,21 @@ const
 
     profiler.stop();
 
-    Logger::notice(
-        std::string("Segmentation phase took: ") +
-        std::to_string(profiler.getDurationNS() / 1000000) +
-        std::string("ms")
-    );
+    if (isProfiling) {
+        Logger::notice(
+            std::string("Segmentation phase took: ") +
+            std::to_string(profiler.getDurationNS() / 1000000) +
+            std::string("ms")
+        );
+    }
 
     return segments;
 }
 
 std::vector<structs::Segment>
 ImgProcessor::processFilterCandidates(
-    const std::vector<structs::Segment>& segments
+    const std::vector<structs::Segment>& segments,
+    const bool& isProfiling
 )
 const
 {
@@ -245,17 +254,22 @@ const
 
     profiler.stop();
 
-    Logger::notice(
-        std::string("FilterCandidates phase took: ") +
-        std::to_string(profiler.getDurationNS() / 1000000) +
-        std::string("ms")
-    );
+    if (isProfiling) {
+        Logger::notice(
+            std::string("FilterCandidates phase took: ") +
+            std::to_string(profiler.getDurationNS() / 1000000) +
+            std::string("ms")
+        );
+    }
 
     return filteredSegments;
 }
 
 std::vector<structs::Segment>
-ImgProcessor::processDetection(const std::vector<structs::Segment>& segments)
+ImgProcessor::processDetection(
+    const std::vector<structs::Segment>& segments,
+    const bool& isProfiling
+)
 const
 {
     PerformanceTimer profiler;
@@ -266,11 +280,13 @@ const
 
     profiler.stop();
 
-    Logger::notice(
-        std::string("Detection phase took: ") +
-        std::to_string(profiler.getDurationNS() / 1000000) +
-        std::string("ms")
-    );
+    if (isProfiling) {
+        Logger::notice(
+            std::string("Detection phase took: ") +
+            std::to_string(profiler.getDurationNS() / 1000000) +
+            std::string("ms")
+        );
+    }
 
     return groupedSegments;
 }

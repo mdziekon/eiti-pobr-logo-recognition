@@ -32,12 +32,30 @@ namespace pobr::imgProcessing
         const bool isReady() const;
         const void assertIsReady() const;
 
-        cv::Mat processPreEnhance(const cv::Mat& img) const;
-        cv::Mat processBinarize(const cv::Mat& img) const;
-        cv::Mat processBinaryEnhance(const cv::Mat& img) const;
-        std::vector<structs::Segment> processSegmentation(const cv::Mat& img) const;
-        std::vector<structs::Segment> processFilterCandidates(const std::vector<structs::Segment>& segments) const;
-        std::vector<structs::Segment> processDetection(const std::vector<structs::Segment>& candidates) const;
+        cv::Mat processPreEnhance(
+            const cv::Mat& img,
+            const bool& isProfiling = false
+        ) const;
+        cv::Mat processBinarize(
+            const cv::Mat& img,
+            const bool& isProfiling = false
+        ) const;
+        cv::Mat processBinaryEnhance(
+            const cv::Mat& img,
+            const bool& isProfiling = false
+        ) const;
+        std::vector<structs::Segment> processSegmentation(
+            const cv::Mat& img,
+            const bool& isProfiling = false
+        ) const;
+        std::vector<structs::Segment> processFilterCandidates(
+            const std::vector<structs::Segment>& segments,
+            const bool& isProfiling = false
+        ) const;
+        std::vector<structs::Segment> processDetection(
+            const std::vector<structs::Segment>& segments,
+            const bool& isProfiling = false
+        ) const;
     };
 }
 
