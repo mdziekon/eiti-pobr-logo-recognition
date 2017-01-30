@@ -59,13 +59,8 @@ binarization::binarizeImage(const cv::Mat& img, const unsigned int& threshold)
             auto& thisPixel = img.at<cv::Vec3b>(y, x);
 
             uint8_t value;
-            cv::Vec3d hsv = converters::rgb2HSV(thisPixel);
 
             if (thisPixel[0] > threshold && thisPixel[1] > threshold && thisPixel[2] > threshold)
-            {
-                value = 255;
-            }
-            else if (hsv[0] > 85 && hsv[0] < 195 && hsv[2] > 50)
             {
                 value = 255;
             }
