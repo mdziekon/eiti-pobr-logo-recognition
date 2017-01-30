@@ -22,7 +22,8 @@ namespace pobr::imgProcessing
         cv::Mat drawSegmentsBBoxes(
             const cv::Mat& img,
             const std::vector<structs::Segment>& segments,
-            const cv::Vec3b& borderColor = { 0, 0, 255 }
+            const cv::Vec3b& borderColor = { 0, 0, 0 },
+            const unsigned int& borderSize = 1
         ) const;
 
     protected:

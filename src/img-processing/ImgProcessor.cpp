@@ -265,7 +265,8 @@ cv::Mat
 ImgProcessor::drawSegmentsBBoxes(
     const cv::Mat& img,
     const std::vector<structs::Segment>& segments,
-    const cv::Vec3b& borderColor
+    const cv::Vec3b& borderColor,
+    const unsigned int& borderSize
 )
 const
 {
@@ -274,21 +275,57 @@ const
     for (auto& segment: segments) {
         // TODO: Safeguards maybe?
 
-        for (uint64_t x = segment.xMin - 1; x <= segment.xMax + 1; x++) {
-            auto& point1 = resultImg.at<cv::Vec3b>(segment.yMin - 1, x);
-            auto& point2 = resultImg.at<cv::Vec3b>(segment.yMax + 1, x);
+        for (int64_t x = segment.xMin - borderSize; x < segment.xMin; x++) {
+            for (int64_t y = segment.yMin - borderSize; y <= segment.yMax + borderSize; y++) {
+                if (x < 0 || y < 0 || x >= img.cols || y >= img.rows) {
+                    continue;
+                }
 
-            point1[0] = point2[0] = borderColor[0];
-            point1[1] = point2[1] = borderColor[1];
-            point1[2] = point2[2] = borderColor[2];
+                auto& point = resultImg.at<cv::Vec3b>(y, x);
+
+                point[0] = borderColor[0];
+                point[1] = borderColor[1];
+                point[2] = borderColor[2];
+            }
         }
-        for (uint64_t y = segment.yMin - 1; y <= segment.yMax + 1; y++) {
-            auto& point1 = resultImg.at<cv::Vec3b>(y, segment.xMin - 1);
-            auto& point2 = resultImg.at<cv::Vec3b>(y, segment.xMax + 1);
+        for (int64_t x = segment.xMax + 1; x < segment.xMax + 1 + borderSize; x++) {
+            for (int64_t y = segment.yMin - borderSize; y <= segment.yMax + borderSize; y++) {
+                if (x < 0 || y < 0 || x >= img.cols || y >= img.rows) {
+                    continue;
+                }
 
-            point1[0] = point2[0] = borderColor[0];
-            point1[1] = point2[1] = borderColor[1];
-            point1[2] = point2[2] = borderColor[2];
+                auto& point = resultImg.at<cv::Vec3b>(y, x);
+
+                point[0] = borderColor[0];
+                point[1] = borderColor[1];
+                point[2] = borderColor[2];
+            }
+        }
+        for (int64_t y = segment.yMin - borderSize; y < segment.yMin; y++) {
+            for (int64_t x = segment.xMin - borderSize; x <= segment.xMax + borderSize; x++) {
+                if (x < 0 || y < 0 || x >= img.cols || y >= img.rows) {
+                    continue;
+                }
+
+                auto& point = resultImg.at<cv::Vec3b>(y, x);
+
+                point[0] = borderColor[0];
+                point[1] = borderColor[1];
+                point[2] = borderColor[2];
+            }
+        }
+        for (int64_t y = segment.yMax + 1; y < segment.yMax + 1 + borderSize; y++) {
+            for (int64_t x = segment.xMin - borderSize; x <= segment.xMax + borderSize; x++) {
+                if (x < 0 || y < 0 || x >= img.cols || y >= img.rows) {
+                    continue;
+                }
+
+                auto& point = resultImg.at<cv::Vec3b>(y, x);
+
+                point[0] = borderColor[0];
+                point[1] = borderColor[1];
+                point[2] = borderColor[2];
+            }
         }
     }
 
