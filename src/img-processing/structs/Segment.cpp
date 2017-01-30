@@ -287,7 +287,7 @@ const bool
 Segment::isSmallEnough()
 const
 {
-    return (this->getArea() <= 2000);
+    return (this->getArea() <= 3000);
 }
 
 const bool
