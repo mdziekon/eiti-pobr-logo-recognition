@@ -89,10 +89,10 @@ detection::groupLetters(
 
             // - Find letter E
             {
-                const auto expectedCenterXMin = tGlobalCenter.first + (xDiff * 0) + (xDiff * 0.8); 
-                const auto expectedCenterXMax = tGlobalCenter.first + (xDiff * 0) + (xDiff * 1.2); 
-                const auto expectedCenterYMin = tGlobalCenter.second + (yDiff * 0) + (yDiff * 0.8); 
-                const auto expectedCenterYMax = tGlobalCenter.second + (yDiff * 0) + (yDiff * 1.2); 
+                const auto expectedCenterXMin = tGlobalCenter.first + (xDiff * 0) + (xDiff * -1.5); 
+                const auto expectedCenterXMax = tGlobalCenter.first + (xDiff * 0) + (xDiff * 1.5); 
+                const auto expectedCenterYMin = tGlobalCenter.second + (yDiff * 0) + ((yDiff > 0 ? yDiff + 1 : yDiff - 1) * (yDiff > 0 ? -1.5 : 1.5)); 
+                const auto expectedCenterYMax = tGlobalCenter.second + (yDiff * 0) + ((yDiff > 0 ? yDiff + 1 : yDiff - 1) * (yDiff > 0 ? 1.5 : -1.5)); 
 
                 for (const auto& thisSegment: lettersE) {
                     const auto thisGlobalCenter = thisSegment.getGlobalCenter();
@@ -122,10 +122,10 @@ detection::groupLetters(
 
             // - Find letter S
             {
-                const auto expectedCenterXMin = tGlobalCenter.first + (xDiff * 1) + (xDiff * 0.8); 
-                const auto expectedCenterXMax = tGlobalCenter.first + (xDiff * 1) + (xDiff * 1.2); 
-                const auto expectedCenterYMin = tGlobalCenter.second + (yDiff * 1) + (yDiff * 0.8); 
-                const auto expectedCenterYMax = tGlobalCenter.second + (yDiff * 1) + (yDiff * 1.2); 
+                const auto expectedCenterXMin = tGlobalCenter.first + (xDiff * 1) + (xDiff * -1.5); 
+                const auto expectedCenterXMax = tGlobalCenter.first + (xDiff * 1) + (xDiff * 1.5); 
+                const auto expectedCenterYMin = tGlobalCenter.second + (yDiff * 1) + ((yDiff > 0 ? yDiff + 1 : yDiff - 1) * (yDiff > 0 ? -1.5 : 1.5)); 
+                const auto expectedCenterYMax = tGlobalCenter.second + (yDiff * 1) + ((yDiff > 0 ? yDiff + 1 : yDiff - 1) * (yDiff > 0 ? 1.5 : -1.5)); 
 
                 for (const auto& thisSegment: lettersS) {
                     const auto thisGlobalCenter = thisSegment.getGlobalCenter();
@@ -155,10 +155,10 @@ detection::groupLetters(
 
             // - Find letter C
             {
-                const auto expectedCenterXMin = tGlobalCenter.first + (xDiff * 2) + (xDiff * 0.8); 
-                const auto expectedCenterXMax = tGlobalCenter.first + (xDiff * 2) + (xDiff * 1.2); 
-                const auto expectedCenterYMin = tGlobalCenter.second + (yDiff * 2) + (yDiff * 0.8); 
-                const auto expectedCenterYMax = tGlobalCenter.second + (yDiff * 2) + (yDiff * 1.2); 
+                const auto expectedCenterXMin = tGlobalCenter.first + (xDiff * 2) + (xDiff * -1.5); 
+                const auto expectedCenterXMax = tGlobalCenter.first + (xDiff * 2) + (xDiff * 1.5); 
+                const auto expectedCenterYMin = tGlobalCenter.second + (yDiff * 2) + ((yDiff > 0 ? yDiff + 1 : yDiff - 1) * (yDiff > 0 ? -1.5 : 1.5)); 
+                const auto expectedCenterYMax = tGlobalCenter.second + (yDiff * 2) + ((yDiff > 0 ? yDiff + 1 : yDiff - 1) * (yDiff > 0 ? 1.5 : -1.5)); 
 
                 for (const auto& thisSegment: lettersC) {
                     const auto thisGlobalCenter = thisSegment.getGlobalCenter();
